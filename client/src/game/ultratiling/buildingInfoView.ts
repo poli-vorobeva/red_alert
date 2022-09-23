@@ -8,9 +8,9 @@ export class BuildingInfoView extends CachedSprite{
   isPrimary: boolean;
   img: HTMLImageElement;
   playerId: string;
-  color: String;
+  color: string;
 
-  constructor(position: Vector, img: HTMLImageElement, name: string, health: number,  playerId: string, isPrimary: boolean) {    
+  constructor(position: Vector, img: HTMLImageElement, name: string, health: number,  playerId: string, isPrimary: boolean, color:string) {    
     super(200, 200, position);
     this.img = img;
     this.name = name;
@@ -18,16 +18,17 @@ export class BuildingInfoView extends CachedSprite{
     this.playerId = playerId;
     this.isPrimary = isPrimary;
 
-    // Получим цвет игрока
-    const colorIndex = appState.players.find((item) => item.id === playerId).colorIndex
-    const color = appState.colors[colorIndex]    
-    this.color = color;
+    // Получим цвет игрока 
+    // const colorIndex = appState.players.find((item) => item.id === playerId).colorIndex;
+   
+    // const color = appState.colors[colorIndex]    
+     this.color = color;
   }
 
   update(): void {
     const topText = this.ctx.measureText('h').actualBoundingBoxAscent;
     this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
-    this.ctx.fillStyle = String(this.color);
+    this.ctx.fillStyle =this.color;
     
     this.ctx.drawImage(this.img, 0, 0, 200, 200);
     this.ctx.fillRect(0, 0, this.health, 5); // бар состояния здоровья

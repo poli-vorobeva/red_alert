@@ -14,7 +14,7 @@ export class UnitInfoView extends CachedSprite{
   selected:boolean= false;
   color: string
 
-  constructor(position: Vector, img: HTMLImageElement, name: string, health: number,  playerId: string) {    
+  constructor(position: Vector, img: HTMLImageElement, name: string, health: number,  playerId: string, color:string) {    
     super(30, 50, position);
     this.img = img;
     this.name = name;
@@ -22,9 +22,9 @@ export class UnitInfoView extends CachedSprite{
     this.playerId = playerId;
     this.animation = new UnitAnimation(new Vector(0, 0), 2);
 
-    // Получим цвет игрока
-    const colorIndex = appState.players.find((item) => item.id === this.playerId).colorIndex
-    const color = appState.colors[colorIndex]    
+  
+
+
     this.color = color;
   }
 

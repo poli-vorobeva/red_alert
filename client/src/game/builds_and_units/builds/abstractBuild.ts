@@ -37,9 +37,12 @@ export class AbstractBuild extends InteractiveObject{
     this.health = data.content.health;
     this.camera = camera;
     const tileMap = data.content.buildMatrix;
-    const pos =  Vector.fromIVector(data.content.position);
+    const pos = Vector.fromIVector(data.content.position);
+    const colors = ['#f00', '#ff0', '#00f', '#0f0', '#ffa500'];
+    this.color = this.playerId.includes('bot') ? colors[Math.floor(Math.random()*5)] : '#999';
+   
 
-    this.info = new BuildingInfoView(pos, res["barrack"], this.name, this.health, this.playerId, this.primary);
+    this.info = new BuildingInfoView(pos, res["barrack"], this.name, this.health, this.playerId, this.primary, this.color);
     this.info.update();
     this.infoLayer.addObject(this.info);
     
