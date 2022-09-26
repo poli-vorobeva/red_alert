@@ -46,7 +46,7 @@ export class GameModel{
     this.players = players;
     this.map = state.map;
     this.builds = state.builds;
-     this.nextId = createIdGenerator('object');
+    this.nextId = createIdGenerator('object');
     this.players.forEach(item => {
       const playerSide = new PlayerSide(item.id);
       this.tickList.add(playerSide);
@@ -74,6 +74,7 @@ export class GameModel{
 
   init() {
     this.createMap(this.map);
+    console.log('init')
     this.createBuilds(this.builds);
   }
 

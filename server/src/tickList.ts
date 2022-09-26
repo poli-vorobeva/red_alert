@@ -20,4 +20,8 @@ export class TickList {
     this.tickable.push(item);
   }
 
+  remove(item: ITickable) {
+    this.tickable.filter(it => it != item);
+  }
+
 }

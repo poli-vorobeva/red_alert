@@ -9,6 +9,7 @@ import {AbstractBullet} from "../bullet/abstractBullet";
 import { findClosestBuild, findClosestUnit, getTilingDistance } from "../../distance";
 import { AbstractBuildObject } from "../builds/abstractBuildObject";
 import { GoldGameObject } from "../gold";
+import { match } from "assert";
 
 export class AbstractUnitObject extends GameObject {
   data: IGameObjectContent = {
@@ -24,8 +25,8 @@ export class AbstractUnitObject extends GameObject {
   objectId: string;
 
   objects: Record<string, GameObject>;
-  attackRadius: number = 8;
-  findRadius: number = 10;
+  attackRadius: number = 5;
+  findRadius: number = 8;
   subType: string = 'unit';
   type: string;
   direction: Vector;
@@ -47,7 +48,7 @@ export class AbstractUnitObject extends GameObject {
     this.target = null
     this.path = []
     
-    this.weapon = new AbstractWeapon(AbstractBullet, this.attackRadius, 2500, this.objectId);
+    this.weapon = new AbstractWeapon(AbstractBullet, this.attackRadius, 1500, this.objectId);
     this.weapon.moveBullet = (position: Vector, id: string) => {
       this.moveBullet(position, id);
     }
@@ -98,15 +99,28 @@ export class AbstractUnitObject extends GameObject {
     }   
   }
 
+  private isTarget() {
+    if (!this.objects[this.targetId]) {
+      return false;
+    }
+    if (this.objects[this.targetId].subType === 'unit') {
+      return (Math.floor(this.objects[this.targetId].data.position.x) === Math.floor(this.targetHit.x) &&
+        (Math.floor(this.objects[this.targetId].data.position.y) === Math.floor(this.targetHit.y)));
+    }
+    return true;
+  }
+
   private _handleAttack(delta: number) {
     if (this.objects[this.targetId]) {
         // this.weapon.position = this.data.position;
-        this.weapon.position =this.data.position.clone();
-        this.weapon.tryShot(this.targetHit);
-        this.weapon.step(delta);
-        // if (!this.objects[this.targetId] || this.objects[this.targetId].data.position != this.targetHit) {
-        //   this.data.action = 'idle';
-        // }
+      this.weapon.position = this.data.position.clone();
+     
+        if (!this.isTarget() ) {
+          this.data.action = 'idle';
+          return;
+      }
+      this.weapon.tryShot(this.targetHit);
+      this.weapon.step(delta);
       }
       else {
         this.targetId = null;
@@ -140,9 +154,7 @@ export class AbstractUnitObject extends GameObject {
       this._handleAttack(delta);
     }
     if (this.data.action === 'idle') {
-      if (Math.random() > 0.03) {
-        //this.findClosetEnemy();
-      }
+      this.findClosetEnemy();     
     // 
     }
     if (this.data.action === 'cash') {

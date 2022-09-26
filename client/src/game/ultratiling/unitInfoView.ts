@@ -35,7 +35,7 @@ export class UnitInfoView extends CachedSprite{
     //this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height);
     //this.ctx.drawImage(this.img, 0, 0, 30, 30);
     this.animation.render(this.ctx, new Vector(-15, -30), 100);
-    this.ctx.fillRect(0, 0, this.health, 5);
+    this.ctx.fillRect(0, 0, this.health*0.3, 5);
     //this.ctx.fillText('health: ' + this.health.toString(), 0, topText);
     if (this.selected) {
       this.ctx.fillText('Selected', 0, topText * 2);

@@ -22,12 +22,22 @@ export class Bullet extends InteractiveObject{
 
   render(ctx: CanvasRenderingContext2D, camera: Vector) {
     const cameraPos = camera.clone().scale(this.camera.getTileSize());
-    ctx.drawImage(this.image, 100, 100, 50, 50);
+    //ctx.drawImage(this.image, 100, 100, 50, 50);
+    const sz = 5;
+    ctx.fillStyle = "#0ff";
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.ellipse(-camera.x + this.position.x + sz / 2, -camera.y + this.position.y + sz / 2, sz, sz, 0, 0, Math.PI * 2);
+   console.log(camera.x , this.position.x)
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
   }
 
   updateShot(position: IVector) {
     //this.infoLayer._clearTile(this.camera.getTileVector(this.camera.position), this.info, this.camera.getTileSize()); 
-    this.position = Vector.fromIVector(position);
+    this.position = Vector.fromIVector(position).scale(this.camera.getTileSize());;
     //this.info.position = this.position;
    ///this.infoLayer.updateObject(this.info)
   }

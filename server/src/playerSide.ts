@@ -39,11 +39,12 @@ export class PlayerSide{
   updateAvailableObject() {
     const availableObject = Array.from(new Set(this.buildsInGame));
     this.buildings.filter(item => item.status === 'available' && !item.object.deps.every(el => availableObject.includes(el)))
-      .map(it => it.status = 'notAvailable')
+      .map(it => it.status = 'notAvailable');
     this.buildings.filter(item => item.object.deps.includes('rootAccess'))
       .concat(this.buildings.filter(item => item.object.deps.every(el=>availableObject.includes(el))))
       .filter(item => item.status === 'notAvailable')
       .map(item => item.status = 'available'); 
+
   }
 
   getState() {    

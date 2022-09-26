@@ -16,10 +16,10 @@ export class AbstractBullet {
     this.id = id;
   }
 
-  step(delta: number) {
+  tick(delta: number) {
     if (this.isDestroyed) return;
     
-    const next = this.position.clone().add(this.position.clone().sub(this.target).normalize().scale(-this.speed * delta*0.005));
+    const next = this.position.clone().add(this.position.clone().sub(this.target).normalize().scale(-this.speed * delta*0.003));
      //console.log('BULLET', next)
     // console.log('bullet', onLine(this.target, this.position, next))
     // console.log(this.position, this.target, next)
@@ -31,6 +31,7 @@ export class AbstractBullet {
       this.position = next;
     }
   }
+
   // render(ctx:CanvasRenderingContext2D, camera:Vector){
   //   if (this.isDestroyed) return;
 

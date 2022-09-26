@@ -138,7 +138,7 @@ export class BotCommander{
           // Выбрать ближайшего врага
           const closestBuild = findClosestBuild(item.content.position, arrEnemy);
           // послать солдата ${item.objectId} в атаку на ближайшее к нему здание ${closestBuild} ${enemy.objectId}`)
-          this.playerController.setAttackTarget(item.objectId, closestBuild.unit.objectId)
+         this.playerController.setAttackTarget(item.objectId, closestBuild.unit.objectId)
           // if (!this.attakedBuildings[enemyBuild.objectId]) {
           //   this.attakedBuildings[enemyBuild.objectId] = []
           // }

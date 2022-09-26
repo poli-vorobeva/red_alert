@@ -3,6 +3,7 @@ import { IGameObjectContent,IGameObjectData } from "../dto";
 import { PlayerSide } from "../playerSide";
 import { TilesCollection } from "../tileCollection";
 
+
 export class GameObject {
   data: IGameObjectContent = {
     position: null,
@@ -11,6 +12,7 @@ export class GameObject {
     primary: false,
     action: null,
     target: null,
+    
   };
   onUpdate: ( state: IGameObjectData) => void;
   onCreate: (state: IGameObjectData, subType: string) => void;
