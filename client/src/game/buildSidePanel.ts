@@ -47,8 +47,8 @@ export class buildSidePanel extends Control{
     this.data = item;
     this.button.node.textContent = item.object.name;
 
-    //TODO сделать item.progress от 0 до 1
-    this.progress.node.style.height = `${(100 - 100 * item.progress)}px`;
+    //TODO сделать item.progress от 0 до 1git 
+    this.progress.node.style.height = `${(100 - (100 * item.progress)/item.object.time)}px`;
     //this.progress.node.textContent = item.progress.toString();
     //this.status.node.textContent = item.status;
     if (item.status === 'notAvailable') {
