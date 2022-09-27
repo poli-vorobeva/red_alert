@@ -10,7 +10,7 @@ export class OreFactory extends AbstractBuildObject{
     super(objects, playerSides, objectId, type, state);
   } 
 
-  damage(point: Vector, unit: GameObject) {
+  damage(point: Vector, unit: GameObject, damagePower: number) {
 
     if (this.data.health <= 0) {
       this.destroy();
@@ -22,7 +22,7 @@ export class OreFactory extends AbstractBuildObject{
       this.setState((data) => {
         return {
           ...data,
-          health:this.data.health-10,
+          health:this.data.health-damagePower,
         }
       })
     } 

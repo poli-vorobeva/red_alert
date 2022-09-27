@@ -35,7 +35,7 @@ export class AbstractUnitObject extends GameObject {
   weapon: any;
   targetHit: Vector = null;
   playerSides: PlayerSide[];
-
+  damagePower: number = 10;
 
   constructor(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }) {
     super();
@@ -46,14 +46,14 @@ export class AbstractUnitObject extends GameObject {
     this.type = type;
     this.objectId = objectId;
     this.target = null
-    this.path = []
+    this.path = [];
     
     this.weapon = new AbstractWeapon(AbstractBullet, this.attackRadius, 1500, this.objectId);
     this.weapon.moveBullet = (position: Vector, id: string) => {
       this.moveBullet(position, id);
     }
     this.weapon.onBulletTarget = (point: Vector, id: string) => {
-      this.onDamageTile?.(this.targetId, point, id);
+      this.onDamageTile?.(this.targetId, point, id, this.damagePower);
     }
     this.playerSides = playerSides;
   }
@@ -311,7 +311,7 @@ export class AbstractUnitObject extends GameObject {
       content: this.getState(),
     });
   }
-   damage(point: Vector, unit: GameObject) {
+  damage(point: Vector, unit: GameObject, damagePower: number) {
     
     if (this.data.health <= 0) {
       this.destroy();
@@ -320,7 +320,7 @@ export class AbstractUnitObject extends GameObject {
       this.setState((data) => {
         return {
           ...data,
-          health:this.data.health-10,
+          health: this.data.health - damagePower,
         }
       })
     } 

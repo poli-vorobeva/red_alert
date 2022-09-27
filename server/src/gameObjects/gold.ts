@@ -35,7 +35,7 @@ export class GoldGameObject extends GameObject{
     return this.data;
   }
 
-  damage(point: Vector, unit: GameObject) {
+  damage(point: Vector, unit: GameObject, damagePower: number) {
     if (this.data.health <= 0) {
       this.destroy();
     } else if(this.data.health>0){

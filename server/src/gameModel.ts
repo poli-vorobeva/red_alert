@@ -190,10 +190,10 @@ export class GameModel{
         delete this.objects[state.objectId]; 
       }
 
-      gameObject.onDamageTile = (targetId, point, id: string) => {
+      gameObject.onDamageTile = (targetId, point, id: string, damagePower) => {
         const obj = this.gameObjects.find(it => it.objectId === targetId);
         if (obj) {
-          this.gameObjects.find(it => it.objectId === targetId).damage(point, gameObject);
+          this.gameObjects.find(it => it.objectId === targetId).damage(point, gameObject, damagePower);
         }
         this.onShot(point, id); 
         //gameObjects

@@ -9,6 +9,7 @@ import { AbstractUnitObject } from './abstractUnitObject';
 
 export class Truck extends AbstractUnitObject{
   money: number;
+  damagePower = 0;
   constructor(objects:Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }) {
     super(objects, playerSides, objectId, type, state);
     this.attackRadius = 2;
@@ -16,7 +17,7 @@ export class Truck extends AbstractUnitObject{
     this.findRadius = 30;
     this.weapon = new AbstractWeapon(AbstractBullet, this.attackRadius, 2000, objectId);
     this.weapon.onBulletTarget = (point: Vector, id: string) => {
-      this.onDamageTile?.(this.targetId, point, id);
+      this.onDamageTile?.(this.targetId, point, id, this.damagePower);
       if (this.data.action === 'attack'&&this.objects[this.targetId]) {
         if (this.objects[this.targetId].subType === 'gold') {
           this.money += 200;

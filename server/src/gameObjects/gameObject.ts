@@ -17,7 +17,7 @@ export class GameObject {
   onUpdate: ( state: IGameObjectData) => void;
   onCreate: (state: IGameObjectData, subType: string) => void;
   onDelete: (state: IGameObjectData) => void;
-  onDamageTile: (targetId: string, point: Vector, id: string) => void;
+  onDamageTile: (targetId: string, point: Vector, id: string, damagePower: number) => void;
   moveBullet: (point: Vector, id: string) => void;
 
   objectId: string;
@@ -98,7 +98,7 @@ export class GameObject {
       content: this.getState(),
     });    
   }
-  damage(point: Vector, unit: GameObject) {
+  damage(point: Vector, unit: GameObject, damagePower: number) {
     
     if (this.data.health <= 0) {
       this.destroy();
@@ -107,7 +107,7 @@ export class GameObject {
       this.setState((data) => {
         return {
           ...data,
-          health:this.data.health-10,
+          health:this.data.health-damagePower,
         }
       })
     } 

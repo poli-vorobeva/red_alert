@@ -61,7 +61,7 @@ export class AbstractBuildObject extends GameObject{
       content: this.getState(),
     });    
   }
-  damage(point: Vector, unit: GameObject) {
+  damage(point: Vector, unit: GameObject, damagePower: number) {
     
     if (this.data.health <= 0) {
       this.destroy();
@@ -70,7 +70,7 @@ export class AbstractBuildObject extends GameObject{
       this.setState((data) => {
         return {
           ...data,
-          health:this.data.health-10,
+          health: this.data.health - damagePower,
         }
       })
     } 

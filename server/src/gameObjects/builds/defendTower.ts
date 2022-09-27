@@ -10,6 +10,7 @@ export class DefendTower extends AbstractBuildObject{
   attackRadius: number = 10;
   targetId: string;
   weapon: AbstractWeapon;
+  damagePower = 10;
   constructor(objects:Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }) {
     super(objects, playerSides, objectId, type, state);
     
@@ -19,7 +20,7 @@ export class DefendTower extends AbstractBuildObject{
   
     }
     this.weapon.onBulletTarget = (point: Vector, id: string) => {
-      this.onDamageTile?.(this.targetId, point, id);
+      this.onDamageTile?.(this.targetId, point, id, this.damagePower);
     }
   } 
 
