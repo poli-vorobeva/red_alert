@@ -17,7 +17,7 @@ export class IClientModel
   onChatMsg: (msg: IChatMsg) => void;
   onUsersList: (msg: IUserItem[]) => void;
   onGamesList: (msg: ISendItemGame[]) => void;
-  addUser: (players: number, initialData: IInitialData[][], credit: number) => void;
+  addUser: (players?: number, initialData?: IInitialData[][], credit?: number) => void;
    onMoveBullet: (data: { position: IVector, id: string })=> void;
 
   registerGamePlayer: (gameID:number) => void;

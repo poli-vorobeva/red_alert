@@ -176,11 +176,13 @@ export class ServerSocket {
             conn.game = content.gameID;
             if(conn.game>=0){
             // console.log("RGP", conn.game, msg.content);
-            const game = this.games.get(conn.game).game;
+              const game = this.games.get(conn.game).game;
+              const settings = this.games.get(conn.game).getItem();
               game.registerPlayer(
                 content.playerType,
                 playerId,
-                this.connections.get(playerId)
+                this.connections.get(playerId),
+                settings
               )
             }
             this.sendGamesList();

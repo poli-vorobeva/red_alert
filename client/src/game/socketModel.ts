@@ -8,10 +8,11 @@ import {
   IChatMsg,
   IUserItem,
   ISendItemGame,
+  IGameOptions,
 } from "./dto";
 import { IClientModel } from "./IClientModel";
 import session from "../application/session";
-import {IGameOptions} from "../application/settingsPageMulti";
+
 import { GameModel } from "../../../server/src/gameModel";
 export class SocketModel implements IClientModel {
   game: GameModel;
@@ -200,8 +201,9 @@ export class SocketModel implements IClientModel {
   }
 
   createMap(map: number[][]):Promise<string> {
-    const content = JSON.stringify({map});
-    return this.client.sendMessage('createMap', content);
+    // const content = JSON.stringify({map});
+    // return this.client.sendMessage('createMap', content);
+    return new Promise((res)=>res)
   }
 
   //all game player methods

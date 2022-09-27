@@ -1,13 +1,16 @@
 import Control from "../../../common/control";
+import {  IInitialData } from "../game/dto";
 import { IClientModel } from "../game/IClientModel";
 import mapsData from "../game/maps.json";
 import style from "./settingsPage.css";
 
 export interface IMapsData {
-  size: string;
-  players: number;
-  name: string;
-  src: string;
+  size: string,
+  players: number,
+  name: string,
+  src: string,
+  srcData: string,
+  initialData: IInitialData[][]
 }
 
 const mapSizes = ["64x64", "64x96", "96x96", "128x96", "128x128"];
@@ -55,14 +58,15 @@ export class SettingsModel {
 }
 
 */
-
 export interface IGameOptions {
   map?: HTMLImageElement;
-  mapGame?:number[][];
+  mapGame?: number[][];
   credits: number;
-  mapID: number;
-  speed: number;
-  info: string;
+  mapID?: number;
+  speed?: number;
+  info?: string;
+  initialData: IInitialData[][];
+  players: number;
 }
 
 export class Settings extends Control {
@@ -71,6 +75,9 @@ export class Settings extends Control {
   maps: IMapsData[];
   filteredMaps: IMapsData[];
   map: IMapsData;
+  mapData: HTMLImageElement = new Image(96, 96)
+  initialData: IInitialData[][]
+  players: number = 2;
   //mapImage: HTMLImageElement;
   credit: number;
   // onStartGame: (players: string) => void;
@@ -149,7 +156,7 @@ export class Settings extends Control {
       speedWrapper.node,
       "label",
       "",
-      "Скорость"
+      "Players"
     );
     const speedInput = new Control<HTMLInputElement>(
       speedWrapper.node,
@@ -166,7 +173,6 @@ export class Settings extends Control {
       );
       speedValue.node.value = i.toString();
       speedValue.node.onclick = () => {
-        //
       };
     }
 
@@ -292,11 +298,10 @@ export class Settings extends Control {
     playButton.node.onclick = () => {
       //TODO сформироать IGameOptions
       const settings: IGameOptions = {
-        map: imageMap, //this.mapImage,
+        map: this.mapData,//this.mapImage,
         credits: this.credit,
-        mapID: this.maps.indexOf(this.map),
-        speed: Number(speedInput.node.value),
-        info: info.node.value,
+        initialData: this.initialData,
+        players: this.players,
       };
       // socket.onAuth = (name) => {
       //   this.onAuth(name);
@@ -316,6 +321,9 @@ export class Settings extends Control {
     imageMap.src = this.maps[num].src;
     imageMap.alt = `Карта ${this.maps[num].name} размером ${this.maps[num].size}`;
     this.map = this.maps[num];
+
+    this.mapData.src = this.maps[num].srcData;
+    this.initialData = this.maps[num].initialData;
     //this.mapImage = imageMap;
   }
 

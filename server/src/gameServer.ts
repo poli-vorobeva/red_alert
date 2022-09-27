@@ -1,4 +1,4 @@
-import {  IRegisteredPlayerInfo, IServerRequestMessage, IStartGameResponse } from "./dto";
+import {  IRegisteredPlayerInfo, ISendItem, IServerRequestMessage, IStartGameResponse } from "./dto";
 import { GameModel } from "./gameModel";
 import { connection } from "websocket";
 import { BotCommander } from './botCommander';
@@ -7,7 +7,13 @@ import { PlayerController } from "./playerController";
 import { SpectatorCommander } from "./spectatorCommander";
 import { Session } from "./serverSocket";
 import { INITIAL_DATA } from './initialData'
-
+export interface IInitialData {
+  name: string;
+  position: {
+    x: number;
+    y: number;
+  }
+}
 export interface IGameOptions {
   id: number;
   credits: number;
@@ -15,6 +21,8 @@ export interface IGameOptions {
   speed: number;
   info: string;
   mapGame: number[][];
+  players: number;
+  initialData: IInitialData[][]
 }  
 
 export class GameServer {
@@ -24,6 +32,7 @@ export class GameServer {
   gameModel: GameModel;
   map: number[][] =[];  
   private _settings:IGameOptions; 
+  initialData: IInitialData[][];
   constructor(props:IGameOptions){
     this._settings = props;
   }
@@ -31,11 +40,13 @@ export class GameServer {
   get settings(){ return this._settings };
   getPlayersInfo():IRegisteredPlayerInfo[]{ return this.registeredPlayersInfo }; // при регистрации приходит тип: бот, human, зритель
   
-  registerPlayer(type:'bot'|'human'|'spectator', userId:string, connection:Session){ // регистрация игрока
-    if(this.registeredPlayersInfo.find((x)=>x.id===userId)){
+  registerPlayer(type:'bot'|'human'|'spectator', userId:string, connection:Session, settings: ISendItem){ // регистрация игрока
+    
+    if (this.registeredPlayersInfo.find((x) => x.id === userId)) {
       return {successfully:false};
     } else {
-
+      this.map = settings.mapGame;
+      this.initialData = settings.initialData;
       const colorIndex = this.registerPlayer.length + 1; // цвет игрока
       this.registeredPlayersInfo.push({ type, id: userId, connection, colorIndex });
       if (this.registeredPlayersInfo.filter(item=>item.type ==='human'||item.type ==='bot').length >= 2) {
@@ -61,7 +72,7 @@ export class GameServer {
   }
 
   startGame() {
-    this.gameModel = new GameModel(this.registeredPlayersInfo, { map: this.map, builds: INITIAL_DATA });
+    this.gameModel = new GameModel(this.registeredPlayersInfo, { map: this.map, builds: this.initialData });
     this.players = this.registeredPlayersInfo.map(it=> {
       const playerController = new PlayerController(it.id, this.gameModel);
       if (it.type === 'bot') {
@@ -123,7 +134,7 @@ export class GameServer {
   }
 
   createGame(data:{map:number[][] } ) {   
-    this.map = data.map;
+   // this.map = data.map;
     
    // this.gameModel.createMap()
   }

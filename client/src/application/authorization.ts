@@ -58,7 +58,7 @@ export class Authorization extends Control {
       "Start play"
     );
     play.node.onclick = () => {
-      //socket.addUser();
+      socket.addUser();
     };
 
     const cancel = new Control(

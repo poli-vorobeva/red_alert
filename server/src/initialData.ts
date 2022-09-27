@@ -1,80 +1,113 @@
 import { Vector } from "../../common/vector";
 
 export const INITIAL_DATA = [
-//  [{
-//       name: 'barrack',
-//       position: (new Vector(29,19))
-//     }],
-  // [
-  //    {
-  //     name: 'buildingCenter',
-  //     position: (new Vector(78,84))
-  //   },
-  //   {
-  //     name: 'barrack',
-  //     position: (new Vector(83,86))
-  //   },
-  //   {
-  //     name: 'oreFactory',
-  //     position: (new Vector(78,90))
-  //   },
-  // ],
-   [
+  [
      {
       name: 'buildingCenter',
-      position: (new Vector(20,20))
+      position: {
+        x: 78,
+        y:84,
+      }
     },
     {
       name: 'barrack',
-      position: (new Vector(23,15))
+      position: {
+        x: 83,
+        y: 86,
+      }
     },
     {
       name: 'oreFactory',
-      position: (new Vector(26,20))
+      position: {
+        x: 78,
+        y: 90,
+      }
     },
   ],
   [
     {
       name: 'buildingCenter',
-      position: (new Vector(8,4))
+      position: {
+        x: 8,
+        y: 4,
+      }
     },
     {
       name: 'barrack',
-      position: (new Vector(13,6))
+      position: {
+        x: 13,
+        y: 6,
+      }
     },
     {
       name: 'oreFactory',
-      position: (new Vector(8,10))
+      position: {
+        x: 8,
+        y: 10,
+      }
     },
   ],
      [
      {
       name: 'buildingCenter',
-      position: (new Vector(78,4))
+         position: {
+           x: 78,
+           y: 4,
+         }
     },
     {
       name: 'barrack',
-      position: (new Vector(83,6))
+      position: {
+        x: 83,
+        y: 6,
+      }
     },
     {
       name: 'oreFactory',
-      position: (new Vector(78,10))
+    position: {
+    x: 78,
+      y: 10,
+      }
     },
   ],
   
   [
     {
       name: 'buildingCenter',
-      position: (new Vector(8,84))
+      position: {
+        x: 8,
+        y: 84,
+      }
     },
     {
       name: 'barrack',
-      position: (new Vector(13,86))
+      position: {
+        x: 13,
+        y: 86,
+      }
     },
     {
       name: 'oreFactory',
-      position: (new Vector(8,90))
+      position: {
+        x: 8,
+        y: 90,
+      }
     },
   ],
    
 ];
+
+// [
+//   {
+//     name: 'buildingCenter',
+//     position: (new Vector(20, 20))
+//   },
+//   {
+//     name: 'barrack',
+//     position: (new Vector(23, 15))
+//   },
+//   {
+//     name: 'oreFactory',
+//     position: (new Vector(26, 20))
+//   },
+// ],

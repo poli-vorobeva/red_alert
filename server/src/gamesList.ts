@@ -4,7 +4,7 @@ import {IGameOptions} from './gameServer'
 type ICreateGameOptions = Omit<IGameOptions,'id'>
 export default class GamesList {
   private _list: GamesListItem[] = [];
-  createGame(settings:ICreateGameOptions) {
+  createGame(settings: ICreateGameOptions) {
     const id:number = this._list.length;
     const s:IGameOptions = {...settings,id:id}
     this._list.push(new GamesListItem(s));

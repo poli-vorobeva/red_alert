@@ -1,4 +1,4 @@
-import { GameServer,IGameOptions } from "./gameServer";
+import { GameServer,IGameOptions, IInitialData } from "./gameServer";
 import { IUser } from "./serverSocket";
 
 interface IUserGame extends IUser {
@@ -11,6 +11,9 @@ export interface ISendItem {
   speed: number;
   info: string;
   users: IUserGame[];
+  players: number;
+  mapGame: number[][];
+  initialData: IInitialData[][]
 }
 
 export default class GamesListItem {
@@ -37,6 +40,9 @@ export default class GamesListItem {
       speed:   this.game.settings.speed,
       info:    this.game.settings.info,
       users: users,
+      players: this.game.settings.players,
+      mapGame: this.game.settings.mapGame,
+      initialData: this.game.settings.initialData,
     };
   }
   unregister(id:string){
