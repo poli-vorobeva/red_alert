@@ -4,12 +4,18 @@ import mapsData from '../game/maps.json';
 import style from './settingsPageSingle.css'
 //import InfoPage from './infoPage';
 import Range from '../components/range'
+import { IVector } from '../../../common/vector';
+import { IGameOptions, IInitialData } from '../game/dto';
+
+
 
 export interface IMapsData{
   size: string,
   players: number,
   name: string,
-  src: string
+  src: string,
+  srcData: string,
+  initialData: IInitialData[][]
 }
 
 const mapSizes = ['64x64', '64x96', '96x96', '128x96', '128x128']
@@ -56,10 +62,7 @@ export class SettingsModel {
 
 */
 
-export interface IGameOptions  {
-  map: HTMLImageElement;
-  credits: number;
-}
+
 
 export class SettingsPage extends Control {
   onBack: () => void;
@@ -67,11 +70,14 @@ export class SettingsPage extends Control {
   maps: IMapsData[];
   filteredMaps: IMapsData[];
   map: IMapsData;
+  mapData: HTMLImageElement = new Image(96, 96)
   //mapImage: HTMLImageElement;
   credit: number;
   onStartGame: (players: string) => void;
   onAuth: (name:string) => void;
   nameUser: string;
+  initialData: IInitialData[][]
+  players: number = 2;
 
   constructor(parentNode: HTMLElement, socket: IClientModel){//, initialSettings: IGameOptions/*, maps: IMapsData[]*/) {
     
@@ -103,7 +109,7 @@ export class SettingsPage extends Control {
       '0', '10000', '1000', '0', '10000');
 
     //const speedWrapper = new Control(basicSettingsWrapper.node, 'div', style["item_wrapper"]);
-    const speedLabel = new Control<HTMLLabelElement>(basicSettingsWrapper.node, 'label', style['item_settings'], 'Game\'s speed')
+    const playersdLabel = new Control<HTMLLabelElement>(basicSettingsWrapper.node, 'label', style['item_settings'], 'Players')
     // const speedInput = new Control<HTMLInputElement>(basicSettingsWrapper.node, 'select', style['item_settings'], '7');
     // for (let i = 1; i <= 7; i++) {
     //   const speedValue = new Control<HTMLOptionElement>(speedInput.node, 'option', style[''], `${i}`);
@@ -113,9 +119,14 @@ export class SettingsPage extends Control {
     //   }
     // }
 
-    const speed = new Range(basicSettingsWrapper.node,
+    const playersInput = new Range(basicSettingsWrapper.node,
       'speed', 
-      '1', '7', '1', '1', '7');
+      '2', '4', '1', '2', '4');
+    playersInput.onChange = (value)=>{
+      this.players = value;
+      console.log(this.players);
+    }
+      
 
 
 
@@ -140,7 +151,7 @@ export class SettingsPage extends Control {
    
     //const imageWrapper = new AnimatedControl(mapSlider.node, 'div', {default:style['image_map'], hidden:style['hide_map']});
     const imageWrapper = new Control(mapSlider.node, 'div', style['image_map']);
-    const imageMap = new Image(200, 200);  
+    const imageMap = new Image(200, 200); 
     
     imageWrapper.node.append(imageMap);
 
@@ -233,8 +244,10 @@ export class SettingsPage extends Control {
     const playButton = new Control(buttonsWrapper.node, 'button', '', 'play');
     playButton.node.onclick = () => {
       const settings:IGameOptions = {
-        map: imageMap,//this.mapImage,
-        credits: this.credit
+        map: this.mapData,//this.mapImage,
+        credits: this.credit,
+        initialData: this.initialData,
+        players: this.players,
       };      
       this.onPlay(settings);
     }
@@ -250,6 +263,8 @@ export class SettingsPage extends Control {
     imageMap.src = this.maps[num].src; 
     imageMap.alt = `Карта ${this.maps[num].name} размером ${this.maps[num].size}`;
     this.map = this.maps[num];
+    this.mapData.src = this.maps[num].srcData;
+    this.initialData = this.maps[num].initialData;
     //this.mapImage = imageMap;
   }
 

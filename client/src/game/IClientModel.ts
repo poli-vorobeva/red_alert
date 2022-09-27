@@ -1,5 +1,5 @@
 import { IVector, Vector } from "../../../common/vector";
-import { IGameUpdateResponse, IChatMsg, IUserItem} from "./dto";
+import { IGameUpdateResponse, IChatMsg, IUserItem, IInitialData} from "./dto";
 import { IGameObjectData, IObjectInfo, ISendItemGame } from "./dto";
 import {IGameOptions} from '../application/settingsPageMulti'
 import { GameModel } from "../../../server/src/gameModel";
@@ -17,7 +17,7 @@ export class IClientModel
   onChatMsg: (msg: IChatMsg) => void;
   onUsersList: (msg: IUserItem[]) => void;
   onGamesList: (msg: ISendItemGame[]) => void;
-  addUser: () => void;
+  addUser: (players: number, initialData: IInitialData[][], credit: number) => void;
    onMoveBullet: (data: { position: IVector, id: string })=> void;
 
   registerGamePlayer: (gameID:number) => void;

@@ -6,7 +6,7 @@ export default class Range extends Control {
   minValueText: Control<HTMLElement>;
   maxValueText: Control<HTMLElement>;
   containerRange: Control<HTMLElement>;
-  onChange: (type: string, min: string, max: string) => void;
+  onChange: (value:number) => void;
   constructor(parentNode: HTMLElement, type /*money/speed*/: string, min: string, max: string, step: string, minValue: string, maxValue: string) {
     super(parentNode, 'div', style['double-range'])
     this.minValueText = new Control(this.node, 'span', style['value-range']);
@@ -30,9 +30,10 @@ export default class Range extends Control {
     this.maxValueText = new Control(this.node, 'span', style['value-range']);
     this.maxValueText.node.textContent = max;
     
-    this.inputUp.node.oninput = () => {
+    this.inputUp.node.oninput = (e:any) => {
       //this.setGradient();
       this.setValueToSpan();
+      this.onChange(e.target.value);
 
       // if (+this.inputUp.node.value > +this.inputDown.node.value) {
       //   this.inputDown.node.value = this.inputUp.node.value;

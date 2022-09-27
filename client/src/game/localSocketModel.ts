@@ -2,7 +2,7 @@ import { BotCommander } from "../../../server/src/botCommander";
 import { IRegisteredPlayerInfo } from "../../../server/src/dto";
 import { GameModel } from "../../../server/src/gameModel";
 import { PlayerController } from "../../../server/src/playerController";
-import { IChatMsg, IUserItem, IGameUpdateResponse,ISendItemGame, } from './dto';
+import { IChatMsg, IUserItem, IGameUpdateResponse,ISendItemGame, IInitialData, } from './dto';
 import { IGameObjectData, IObjectInfo } from "./dto";
 import { IClientModel } from './IClientModel'
 import { IVector, Vector } from '../../../common/vector'
@@ -31,9 +31,9 @@ export class LocalModel implements IClientModel
 
   }
 
-  addUser() {
+  addUser(players: number, initialData: IInitialData[][], credit: number) {
     this.player = 'user' + Math.floor(Math.random() * 100);
-    const bots: IRegisteredPlayerInfo[] = new Array(1).fill(null).map((item, index) => {
+    const bots: IRegisteredPlayerInfo[] = new Array(players-1).fill(null).map((item, index) => {
       return {
         id: 'bot' + Math.floor(Math.random() * 100),
         type: 'bot',
@@ -41,18 +41,18 @@ export class LocalModel implements IClientModel
       }
     });
     this.onAuth(this.player);
-    this.startGame(bots);
+    this.startGame(bots, initialData);
   }
 
-  startGame(playersInfo: IRegisteredPlayerInfo[]){
-    
+  startGame(playersInfo: IRegisteredPlayerInfo[], initialData: IInitialData[][]){
+    console.log()
     const gamePlayersInfo = playersInfo.slice();
     gamePlayersInfo.push({
       id: this.player,
       type: 'human',
       colorIndex: 1
     });
-    const game = new GameModel(gamePlayersInfo,  {map: this.map, builds: INITIAL_DATA});
+    const game = new GameModel(gamePlayersInfo,  {map: this.map, builds: initialData});
     const myPlayerController: PlayerController = new PlayerController(this.player, game);
     this.myPlayer = myPlayerController;
     const bots = playersInfo.map(it=> {

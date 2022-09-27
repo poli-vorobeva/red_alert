@@ -16,6 +16,19 @@ export interface IGameObjectData{
   objectId: string; 
   content: IGameObjectContent;
 }
+export interface IInitialData {
+  name: string;
+  position: {
+    x: number;
+    y: number;
+  }
+}
+export interface IGameOptions {
+  map: HTMLImageElement;
+  credits: number;
+  initialData: IInitialData[][];
+  players: number;
+}
 
 export interface IObject {
   deps: string[],

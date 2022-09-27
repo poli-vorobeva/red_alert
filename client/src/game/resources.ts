@@ -18,10 +18,10 @@ import radar from '../assets/png/radar.png';
 import energy from '../assets/png/energy.png';
 import defendedTower from '../assets/png/defendedTower.png'
 import map from '../assets/png/map96g.png';
-import map1 from '../assets/png/map1.png';
-import map2 from '../assets/png/map2.png';
-import map3 from '../assets/png/map3.png';
-import map4 from '../assets/png/map4.png';
+import map1 from '../assets/maps/map1.png';
+import map2 from '../assets/maps/map2.png';
+import map3 from '../assets/maps/map3.png';
+import map4 from '../assets/maps/map4.png';
 import explosion from '../assets/png/explosion_1.png';
 import bullet from '../assets/png/bullet2.png'
 
