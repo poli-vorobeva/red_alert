@@ -23,7 +23,8 @@ export interface IObject {
   cost: number,
   subType: string,
   time: number,
-  mtx?: number[][]
+  mtx?: number[][],
+  spawn: string
  }
 export interface IObjectInfo {
   object: IObject,

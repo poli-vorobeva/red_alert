@@ -26,6 +26,7 @@ export class SocketModel implements IClientModel {
   onChatMsg: (msg: IChatMsg) => void;  
   onUsersList: (msg: IUserItem[]) => void;  
   onGamesList: (msg: ISendItemGame[]) => void;  
+  sendPrivateMessage: (content: { message: string, type: string }) => void;
 
   private messageHandler: (message: IServerResponseMessage) => void;
   private client: ClientSocket;
@@ -68,6 +69,9 @@ export class SocketModel implements IClientModel {
       }
       if (message.type === "gamesList") {
         this.onGamesList(JSON.parse(message.content));
+      }
+      if (message.type === "sendPrivateResponse") {
+        this.sendPrivateMessage(JSON.parse(message.content));
       }
     };
     this.client.onMessage.add(this.messageHandler);
@@ -150,6 +154,13 @@ export class SocketModel implements IClientModel {
     return this.client.sendMessage("gameMove", content);
   }
 
+  addUnit(name: string, spawn:string, playerId: string): Promise<string> {
+    const content = JSON.stringify({
+      type: "addUnit",
+      content: { name,spawn, playerId },
+    });
+    return this.client.sendMessage("gameMove", content);
+  }
   setPrimary(id: string, name: string): Promise<string> {
     const content = JSON.stringify({
       type: "setPrimary",

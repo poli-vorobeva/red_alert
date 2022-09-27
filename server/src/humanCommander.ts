@@ -42,6 +42,9 @@ export class HumanCommander{
     if (message.type === 'initialMap') {
       return this.playerController.addInitialMap(message.content.map);
     }
+    if (message.type === 'addUnit') {
+      return this.playerController.addUnit(message.content.name,message.content.spawn, message.content.playerId);
+    }
   }
 
   sendMessage(type: string, message: string) {

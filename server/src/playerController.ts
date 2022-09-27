@@ -32,6 +32,10 @@ export class PlayerController{
     return result;
   }
 
+  addUnit(name: string, spawn: string, id: string) {
+    return this.gameModel.addUnit(name,spawn, id);
+  }
+
   moveUnits(unitId:string, target:IVector){
     return this.gameModel.moveUnits(this.playerId, unitId, target);
   }

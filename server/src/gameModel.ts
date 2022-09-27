@@ -28,7 +28,7 @@ export class GameModel{
   playersSides: Array<PlayerSide> =[];
   onUpdate: (state: IGameObjectData, action: string) => void;
   onSideUpdate: (id: string, data: string) => void;
-  sendPrivateResponse: (id: string, content: string) => void;
+  sendPrivateResponse: (id: string, content: {message: string, type: string}) => void;
   onShot: (point: Vector, id: string) => void;
   tickList: TickList;
   gameObjects: GameObject[] = [];
@@ -55,7 +55,7 @@ export class GameModel{
       }
       playerSide.onReady = (type, subType, spawn) => {
         if (subType === 'unit') {
-          this._addUnit(type, spawn, item.id);
+          return this.addUnit(type, spawn, item.id);
         }
         //send response onReady to player
       }     
@@ -92,15 +92,17 @@ export class GameModel{
 
   }
 
-  private _addUnit(type: string, spawn: string, playerId: string) {
+
+
+  addUnit(type: string, spawn: string, playerId: string) {
     const el = this.gameObjects.find(item => item.data.playerId === playerId && item.type === spawn && item.data.primary);
-    if(el){
+    if (el) {
       const position = el.data.position;
       const newPosition = position.clone();
       this.addGameObject(playerId, type, newPosition);
+      return 'true';
     }
-    //position for primary
-    //this.addGameObject()
+    return 'false';
   }
 
   getState(playerId: string) {

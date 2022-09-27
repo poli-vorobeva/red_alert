@@ -41,7 +41,8 @@ export class IClientModel
   createMap: (map: number[][]) => Promise<string>;
   chatSend: (msg?: IChatMsg)=>Promise<string>;
   createGame: (msg?: IGameOptions)=>Promise<string>;
-  getUsersList: (msg?: IChatMsg)=>Promise<string>;
-  //all game player methods
+  getUsersList: (msg?: IChatMsg) => Promise<string>;
+  sendPrivateMessage: (content: { message: string, type: string }) => void;
+  addUnit: (name: string,spawn: string, id: string)=> Promise<string> ; //all game player methods
   game: GameModel;
 }

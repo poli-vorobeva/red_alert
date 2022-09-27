@@ -29,7 +29,6 @@ export class Bullet extends InteractiveObject{
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.ellipse(-camera.x + this.position.x + sz / 2, -camera.y + this.position.y + sz / 2, sz, sz, 0, 0, Math.PI * 2);
-   console.log(camera.x , this.position.x)
     ctx.closePath();
     ctx.fill();
     ctx.stroke();

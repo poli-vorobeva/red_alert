@@ -170,7 +170,7 @@ export class SidePanel extends Control{
         }
 
         obj.onIsReadyClick = (data) => {
-          this.onSidePanelClick('onIsReadyClick', data)
+            this.onSidePanelClick('onIsReadyClick', data);         
         }
         obj.update(item);
         this.buildButtons[item.object.name] = obj; 

@@ -206,7 +206,14 @@ export class GameMainRender{
   }
 
   setSelected(id: string) {
-    this.interactiveList.list.find(item => item.id === id).setSelected();
+    const select = this.interactiveList.list.find(item => item.id === id);
+    if (select) {
+      select.setSelected();
+    }
+  }
+
+  errorBuilding() {
+    this.cursorStatus.planned = null;
   }
 
   handleMouseDown(cursor: Vector) {
@@ -256,6 +263,11 @@ export class GameMainRender{
     
     //console.log(this.camera.getTileVector(this.camera.position.clone().add(cursor)));
    // console.log(this.camera.position.clone().add(cursor));
+  }
+
+  handleContextMenu() {
+    this.cursorStatus.planned = null;
+    this.cursorStatus.selected = [];
   }
 
   public resizeViewPort(width:number, height:number){

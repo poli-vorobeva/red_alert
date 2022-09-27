@@ -103,6 +103,9 @@ export class GameServer {
     this.gameModel.onMoveBullet = (point, id) => {
      this.players.forEach(player=> player.sendMessage('moveBullet', JSON.stringify({position: point, id: id})));
     }
+    this.gameModel.sendPrivateResponse = (id, content) => {
+      this.players.find(it => it.playerController.playerId === id).sendMessage('sendPrivateResponse', JSON.stringify({ content: content }));
+    }
    
     ///start to game, fix it later
     const allPlayers = this.registeredPlayersInfo.map(it => it.id);

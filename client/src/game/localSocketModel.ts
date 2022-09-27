@@ -21,6 +21,7 @@ export class LocalModel implements IClientModel
   onChatMsg: (msg: IChatMsg) => void;
   onUsersList: (msg: IUserItem[]) => void;
   onGamesList: (msg: ISendItemGame[]) => void;
+  sendPrivateMessage: (content: { message: string, type: string }) => void;
   myPlayer: PlayerController;
   player: string;
   game: GameModel;
@@ -77,6 +78,9 @@ export class LocalModel implements IClientModel
     }
     game.onMoveBullet = (point, id) => {
      this.onMoveBullet({ position: point, id: id })
+    }
+    game.sendPrivateResponse = (id, content) => {
+      this.sendPrivateMessage(content);
     }
 
     // game.onUpdate = (id, data)=>{
@@ -151,6 +155,11 @@ export class LocalModel implements IClientModel
 
   moveUnit(id: string, position: Vector): Promise<string>{
     const result =  this.myPlayer.moveUnits(id, position);
+    return new Promise(resolve => resolve(result));
+  }
+
+  addUnit(name: string, spawn: string, id: string): Promise<string>{
+    const result = this.myPlayer.addUnit(name, spawn, id);
     return new Promise(resolve => resolve(result));
   }
 

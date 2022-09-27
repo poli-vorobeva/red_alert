@@ -61,6 +61,7 @@ export class Canvas extends Control{
 
     this.canvas.node.oncontextmenu = (e) => {
       e.preventDefault();
+      this.renderer.handleContextMenu()
     }
     this.canvas.node.onmousedown = (e: MouseEvent) => {
       this.renderer.handleMouseDown(new Vector(e.offsetX, e.offsetY));
@@ -122,6 +123,9 @@ export class Canvas extends Control{
   }
   addBullet(data: { position: IVector, id: string }) {
     this.renderer.addBullet(data);
+  }
+  errorBuiding() {
+    this.renderer.errorBuilding();
   }
 
   render(ctx: CanvasRenderingContext2D, delta: number) {

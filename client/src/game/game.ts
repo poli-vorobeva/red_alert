@@ -50,8 +50,7 @@ export class Game extends Control{
      // console.log(data,'GAme')
       canvas.updateObject(data)
     }
-    socket.onAddObject = (data) => {
-      
+    socket.onAddObject = (data) => {      
       canvas.addObject(data);
     }
 
@@ -66,13 +65,21 @@ export class Game extends Control{
       canvas.addBullet(point);
     }
 
+    socket.sendPrivateMessage = ({message, type}) => {
+    }
+
     sidePanel.onSidePanelClick = (selected, object) => {
       if (selected === 'onAvailableClick') {
         socket.startBuild(object.object.name, id).then((result) => {
           console.log(result);
         })
-      } else if (selected === 'onIsReadyClick') {
+      } else if (selected === 'onIsReadyClick' && object.object.subType === 'build') {
         canvas.setPlannedBuild(object.object);
+      }
+      else if (selected === 'onIsReadyClick' && object.object.subType === 'unit') {
+        socket.addUnit(object.object.name, object.object.spawn, id).then((result) => {
+          console.log(result);
+          })
       } else if (selected === 'onInprogressClick') {
         socket.pauseBuilding(object.object.name, id).then((result) => {
           console.log(result);
