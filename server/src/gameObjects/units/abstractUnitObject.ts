@@ -327,7 +327,9 @@ export class AbstractUnitObject extends GameObject {
       })
     } 
   }
-   destroy() {
+  destroy() {
+    this.weapon.delete();
+    console.log('destroy')
     this.onDelete({
        type: this.type,
       objectId: this.objectId,

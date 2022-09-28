@@ -21,7 +21,7 @@ export class TickList {
   }
 
   remove(item: ITickable) {
-    this.tickable.filter(it => it != item);
+    this.tickable = this.tickable.filter(it => it != item);
   }
 
 }

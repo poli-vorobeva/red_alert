@@ -69,5 +69,11 @@ export class AbstractWeapon{
     
   }
 
- 
+  delete() {
+    this.bullets.map(item => {
+      this.tickList.remove(item);
+      item.delete();
+    })
+    this.bullets = [];
+  }
 }

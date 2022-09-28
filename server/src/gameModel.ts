@@ -145,7 +145,6 @@ export class GameModel{
     }
     gameObject.create();
     this.gameObjects.push(gameObject);
-    //this.tickList.add(gameObject);
   
     return 'add object';
   }
@@ -182,7 +181,8 @@ export class GameModel{
       }
       gameObject.onDelete = (state) => {
         this.playersSides.find(item => item.id === playerId).removeBuilding(objectName);
-        
+        this.tickList.remove(gameObject)
+        //console.log(this.tickList.tickable)
         this.gameObjects = this.gameObjects.filter(it => it.objectId != state.objectId);
         if (gameObject.subType === 'build') { 
            this.addMapBuild(state.content.buildMatrix, state.content.position, 0);
