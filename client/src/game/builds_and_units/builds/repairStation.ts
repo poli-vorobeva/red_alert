@@ -13,8 +13,8 @@ export class RepairStation extends AbstractBuild{
   // position: Vector;
   // type: string;
   // primary: boolean;
-  constructor(layer:TilingLayer, infoLayer:BoundingLayer, res:Record<string, HTMLImageElement>, camera: Camera, data: IGameObjectData) {
-     super(layer, infoLayer, res, camera, data);
+  constructor(layer: TilingLayer, infoLayer: BoundingLayer, res: Record<string, HTMLImageElement>, camera: Camera, data: IGameObjectData, color: string) {
+     super(layer, infoLayer, res, camera, data,color);
     //  const tileMap = data.content.buildMatrix;
     // const pos = data.content.position
 

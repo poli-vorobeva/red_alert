@@ -11,6 +11,7 @@ import red from './red.css'
 export class Game extends Control{
   onExit: () => void;
   onPause: () => void;
+  colorIndex: number;
   constructor(parentNode: HTMLElement, socket: IClientModel, id: string, sidePanelData: string,res:Record<string, HTMLImageElement>) {
     super(parentNode, 'div', red['global_main']);
     
@@ -38,9 +39,9 @@ export class Game extends Control{
       this.onPause(); //TODO сделать попап с паузой
     }
 */
-    const canvas = new Canvas(this.node, res, id);//id
+    const canvas = new Canvas(this.node, res, id,sidePanelInfo.colorIndex);//id
     const sidePanel = new SidePanel(this.node);
-    
+    this.colorIndex = sidePanelInfo.colorIndex
     sidePanel.update(sidePanelInfo.sidePanel);
     
     socket.onSideUpdate = (data) => {
@@ -77,7 +78,7 @@ export class Game extends Control{
         canvas.setPlannedBuild(object.object);
       }
       else if (selected === 'onIsReadyClick' && object.object.subType === 'unit') {
-        socket.addUnit(object.object.name, object.object.spawn, id).then((result) => {
+        socket.addUnit(object.object.name, object.object.spawn, id, this.colorIndex).then((result) => {
           console.log(result);
           })
       } else if (selected === 'onInprogressClick') {

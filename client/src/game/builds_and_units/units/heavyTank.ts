@@ -11,8 +11,8 @@ export class HeavyTank extends AbstractUnit{
   position: Vector;
   type: string;
   selected: boolean;
-  constructor(layer:TilingLayer, infoLayer:BoundingLayer, res:Record<string, HTMLImageElement>, camera: Camera, data: IGameObjectData) {
-     super(layer, infoLayer, res, camera, data);
+  constructor(layer: TilingLayer, infoLayer: BoundingLayer, res: Record<string, HTMLImageElement>, camera: Camera, data: IGameObjectData, color: string) {
+     super(layer, infoLayer, res, camera, data,color);
   }
 
 }

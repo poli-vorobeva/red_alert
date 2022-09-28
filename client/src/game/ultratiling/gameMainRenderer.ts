@@ -37,11 +37,15 @@ export class GameMainRender{
   explosions: Explosion[]=[];
   preventSelect: boolean = false;
   bullets: Record<string, Bullet> = {};
+  colorIndex: number;
+  colors: string[];
 
-  constructor(camera: Camera, width: number, height: number, res: Record<string, HTMLImageElement>, playerId: string) {
+  constructor(camera: Camera, width: number, height: number, res: Record<string, HTMLImageElement>, playerId: string, colorIndex:number) {
     this.res = res;
     this.camera = camera;
     this.playerId = playerId;
+    this.colorIndex = colorIndex;
+    this.colors = ['#0000FF', '#EE0000', '#00FF00', '#ffff00'];
     this.buildsMap = new Array(96).fill(null).map((it) => new Array(96).fill(null).map((el) => 0));
     this.cursorStatus = new GameCursorStatus(this.playerId, ()=>{
       return this.getBuildMap();
@@ -132,7 +136,7 @@ export class GameMainRender{
 
   addObject(data: IGameObjectData) {
     const BuildConstructor = builds[data.type];
-    const interactiveObject = new BuildConstructor(this.tilingLayer, this.boundingLayer, this.res, this.camera, data);
+    const interactiveObject = new BuildConstructor(this.tilingLayer, this.boundingLayer, this.res, this.camera, data, this.colors[data.content.colorIndex]);
     if (interactiveObject instanceof AbstractBuild && data.content.playerId === this.playerId) { this.cursorStatus.planned = null };
     this.changeBuildsMap(interactiveObject, data, 1);
   }

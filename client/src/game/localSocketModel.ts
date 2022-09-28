@@ -26,6 +26,7 @@ export class LocalModel implements IClientModel
   player: string;
   game: GameModel;
   map: number[][];
+  colorIndex = 0;
   onMoveBullet: (data: { position: IVector, id: string })=>void;
   constructor(){
 
@@ -40,7 +41,7 @@ export class LocalModel implements IClientModel
       return {
         id: 'bot' + Math.floor(Math.random() * 100),
         type: 'bot',
-        colorIndex: index + 2
+        colorIndex: index + 1
       }
     });
     this.onAuth(this.player);
@@ -49,19 +50,18 @@ export class LocalModel implements IClientModel
   }
 
   startGame(playersInfo: IRegisteredPlayerInfo[], initialData: IInitialData[][], credits: number, map: number[][]){
-    console.log()
     const gamePlayersInfo = playersInfo.slice();
     gamePlayersInfo.push({
       id: this.player,
       type: 'human',
-      colorIndex: 1
+      colorIndex: this.colorIndex
     });
     const game = new GameModel(gamePlayersInfo,  {map, builds: initialData, credits});
-    const myPlayerController: PlayerController = new PlayerController(this.player, game);
+    const myPlayerController: PlayerController = new PlayerController(this.player, game, 0);
     this.myPlayer = myPlayerController;
     const bots = playersInfo.map(it=> {
-      const playerController = new PlayerController(it.id, game);
-      return new BotCommander(playerController);
+      const playerController = new PlayerController(it.id, game, it.colorIndex);
+      return new BotCommander(playerController, it.colorIndex);
     });
     game.onUpdate = (data, action) => {
       if (action === 'update') {
@@ -103,7 +103,7 @@ export class LocalModel implements IClientModel
     const allPlayers =playersInfo.map(it => it.id);
     allPlayers.push(this.player);
     const sidePanel = game.getState(myPlayerController.playerId);
-    this.onStartGame(JSON.stringify({ players: allPlayers, sidePanel, type:'human' }));
+    this.onStartGame(JSON.stringify({ players: allPlayers, sidePanel, type:'human' ,playerIndex:0}));
     bots.forEach(item => {       
       const sidePanel = game.getState(item.playerController.playerId);      
       item.sendMessage('startGame', JSON.stringify({ players: allPlayers, sidePanel, type: 'bot' }))
@@ -143,7 +143,7 @@ export class LocalModel implements IClientModel
   
   //to map
   addBuild(name: string, position: Vector, playerId: string):Promise<string>{
-    const result = this.myPlayer.addGameObject(name, position);
+    const result = this.myPlayer.addGameObject(name, position, this.colorIndex);
     return new Promise(resolve => resolve(result))
   }
 
@@ -158,8 +158,8 @@ export class LocalModel implements IClientModel
     return new Promise(resolve => resolve(result));
   }
 
-  addUnit(name: string, spawn: string, id: string): Promise<string>{
-    const result = this.myPlayer.addUnit(name, spawn, id);
+  addUnit(name: string, spawn: string, id: string, colorIndex: number): Promise<string>{
+    const result = this.myPlayer.addUnit(name, spawn, id,colorIndex);
     return new Promise(resolve => resolve(result));
   }
 

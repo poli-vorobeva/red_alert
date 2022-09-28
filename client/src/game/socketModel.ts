@@ -156,10 +156,10 @@ export class SocketModel implements IClientModel {
     return this.client.sendMessage("gameMove", content);
   }
 
-  addUnit(name: string, spawn:string, playerId: string): Promise<string> {
+  addUnit(name: string, spawn: string, playerId: string, colorIndex: number): Promise<string> {
     const content = JSON.stringify({
       type: "addUnit",
-      content: { name,spawn, playerId },
+      content: { name,spawn, playerId,colorIndex },
     });
     return this.client.sendMessage("gameMove", content);
   }

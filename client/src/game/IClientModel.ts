@@ -43,6 +43,6 @@ export class IClientModel
 
   getUsersList: (msg?: IChatMsg) => Promise<string>;
   sendPrivateMessage: (content: { message: string, type: string }) => void;
-  addUnit: (name: string,spawn: string, id: string)=> Promise<string> ; //all game player methods
+  addUnit: (name: string,spawn: string, id: string, colorIndex: number)=> Promise<string> ; //all game player methods
   game: GameModel;
 }

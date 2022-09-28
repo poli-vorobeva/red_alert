@@ -9,5 +9,5 @@ import { Gold } from './gold';
 import { Rock } from './rock';
 
 export interface IBuildConstructor{
-  new (layer:TilingLayer, infoLayer:BoundingLayer, res:Record<string, HTMLImageElement>, camera: Camera, data: IGameObjectData):AbstractUnit|AbstractBuild|Gold|Rock
+  new (layer:TilingLayer, infoLayer:BoundingLayer, res:Record<string, HTMLImageElement>, camera: Camera, data: IGameObjectData, color?:string):AbstractUnit|AbstractBuild|Gold|Rock
 }

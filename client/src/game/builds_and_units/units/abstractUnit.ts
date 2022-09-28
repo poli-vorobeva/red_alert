@@ -24,7 +24,7 @@ export class AbstractUnit extends InteractiveObject{
   infoLayer: BoundingLayer;
   camera: Camera;
   color: string;
-  constructor(layer:TilingLayer, infoLayer:BoundingLayer, res:Record<string, HTMLImageElement>,camera: Camera, data: IGameObjectData){
+  constructor(layer:TilingLayer, infoLayer:BoundingLayer, res:Record<string, HTMLImageElement>,camera: Camera, data: IGameObjectData,color:string){
     super();
     this.id = data.objectId;
     this.name = data.type;
@@ -48,8 +48,8 @@ export class AbstractUnit extends InteractiveObject{
     texts.update();
     //console.log(infos.canvas);
     //document.body.appendChild(infos.canvas);*/
-    const colors = ['#f00', '#ff0', '#00f', '#0f0', '#ffa500'];
-    this.color = this.playerId.includes('bot') ? colors[Math.floor(Math.random()*5)] : '#999';
+    
+    this.color = color;
   
     this.info = new UnitInfoView(pos.clone(), res["rocks"],this.name, this.health, this.playerId,this.color);
     this.info.update();

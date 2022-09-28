@@ -21,7 +21,7 @@ export class Canvas extends Control{
   res: Record<string, HTMLImageElement>;
   private _resizeHandler: ()=>void;
 
-  constructor(parentNode: HTMLElement, res:Record<string, HTMLImageElement>, id: string) {
+  constructor(parentNode: HTMLElement, res:Record<string, HTMLImageElement>, id: string, colorIndex: number) {
     super(parentNode, 'div', red['game_field']);
     this.playerId = id;
     this.res = res;
@@ -67,7 +67,7 @@ export class Canvas extends Control{
       this.renderer.handleMouseDown(new Vector(e.offsetX, e.offsetY));
     } 
 
-    this.renderer = new GameMainRender(camera, this.canvas.node.width, this.canvas.node.height, res, this.playerId);
+    this.renderer = new GameMainRender(camera, this.canvas.node.width, this.canvas.node.height, res, this.playerId, colorIndex);
     this.ticker.onTick.add((delta)=>{
       this.render(this.ctx, delta);
     });

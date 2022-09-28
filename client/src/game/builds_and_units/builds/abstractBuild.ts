@@ -24,7 +24,7 @@ export class AbstractBuild extends InteractiveObject{
   tileMap: number[][];
   color: string;
 
-  constructor(layer:TilingLayer, infoLayer:BoundingLayer, res:Record<string, HTMLImageElement>, camera: Camera, data: IGameObjectData){
+  constructor(layer:TilingLayer, infoLayer:BoundingLayer, res:Record<string, HTMLImageElement>, camera: Camera, data: IGameObjectData, color: string){
     super();
 
     this.id = data.objectId;
@@ -39,7 +39,7 @@ export class AbstractBuild extends InteractiveObject{
     const tileMap = data.content.buildMatrix;
     const pos = Vector.fromIVector(data.content.position);
     const colors = ['#f00', '#ff0', '#00f', '#0f0', '#ffa500'];
-    this.color = this.playerId.includes('bot') ? colors[Math.floor(Math.random()*5)] : '#999';
+    this.color = color;
    
 
     this.info = new BuildingInfoView(pos, res["barrack"], this.name, this.health, this.playerId, this.primary, this.color);
