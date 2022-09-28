@@ -6,7 +6,7 @@ import { HumanCommander } from "./humanCommander";
 import { PlayerController } from "./playerController";
 import { SpectatorCommander } from "./spectatorCommander";
 import { Session } from "./serverSocket";
-import { INITIAL_DATA } from './initialData'
+
 export interface IInitialData {
   name: string;
   position: {

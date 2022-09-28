@@ -61,9 +61,9 @@ export class Application extends Control{
         info.destroy();
         this.gameCycle(settings.nameUser, data, res)
       }
-      info.onBack = () => {
-        info.destroy();
-      }
+      // info.onBack = () => {
+      //   info.destroy();
+      // }
     }
 
     settings.onBack = () => {

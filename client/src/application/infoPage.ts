@@ -4,7 +4,7 @@ import { IClientModel } from '../game/IClientModel';
 import { IGameOptions } from '../game/dto';
 
 export default class InfoPage extends Control{
-  onBack: () => void;
+ // onBack: () => void;
   onStartGame: (data:string) => void;
   constructor(parentNode: HTMLElement, socket: IClientModel/*titleContent:string, messageContent:string*/, initialState: IGameOptions){
     super(parentNode, 'div', style['popup'] );
@@ -33,10 +33,10 @@ export default class InfoPage extends Control{
       socket.addInitialData(initialState);
      // this.onBack();
     }
-    const btnCancel = new Control(wrapperButton.node, 'button', style['popup_button'], 'cancel');
-    btnCancel.node.onclick = () => {
-      this.onBack();
-    }
+    // const btnCancel = new Control(wrapperButton.node, 'button', style['popup_button'], 'cancel');
+    // btnCancel.node.onclick = () => {
+    //   this.onBack();
+    // }
 
 
 

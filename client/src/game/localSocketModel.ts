@@ -6,7 +6,7 @@ import { IChatMsg, IUserItem, IGameUpdateResponse,ISendItemGame, IInitialData, I
 import { IGameObjectData, IObjectInfo } from "./dto";
 import { IClientModel } from './IClientModel'
 import { IVector, Vector } from '../../../common/vector'
-import { INITIAL_DATA } from "../../../server/src/initialData";
+
 
 export class LocalModel implements IClientModel
 {

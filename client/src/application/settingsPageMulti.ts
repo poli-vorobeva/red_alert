@@ -100,7 +100,6 @@ export class Settings extends Control {
     //   this.onStartGame(data);
     // }
 
-    this.credit = 10000; /*initialSettings.credits;*/
     this.loadMapsData().then((result) => {
       this.map = this.maps[0];
       this.render();
