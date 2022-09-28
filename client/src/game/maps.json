@@ -10,22 +10,22 @@
           {
             "name": "buildingCenter",
             "position": {
-              "x": 78,
-              "y": 84
+              "x": 25,
+              "y": 21
             }
           },
           {
             "name": "barrack",
             "position": {
-              "x": 83,
-              "y": 86
+              "x": 25,
+              "y": 26
             }
           },
           {
             "name": "oreFactory",
             "position": {
-              "x": 78,
-              "y": 90
+              "x": 30,
+              "y": 20
             }
           }
         ],
