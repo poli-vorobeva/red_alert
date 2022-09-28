@@ -6,11 +6,12 @@ import { IGameOptions } from '../game/dto';
 export default class InfoPage extends Control{
   onBack: () => void;
   onStartGame: (data:string) => void;
-  constructor(parentNode:HTMLElement, socket: IClientModel/*titleContent:string, messageContent:string*/,{players,credits,initialData}:IGameOptions ){
+  constructor(parentNode: HTMLElement, socket: IClientModel/*titleContent:string, messageContent:string*/, initialState: IGameOptions){
     super(parentNode, 'div', style['popup'] );
     socket.onStartGame = (data: string) => {
       this.onStartGame(data);
-  }
+    }
+    socket.addUser();
     
 
     const body = new Control(this.node, 'div', style['popup_body']);
@@ -29,7 +30,7 @@ export default class InfoPage extends Control{
     const wrapperButton = new Control(content.node, 'div', style['wrapper_button'], '');
     const btnOk = new Control(wrapperButton.node, 'button', style['popup_button'], 'create');
     btnOk.node.onclick = () => {
-      socket.addUser(players,initialData, credits);
+      socket.addInitialData(initialState);
      // this.onBack();
     }
     const btnCancel = new Control(wrapperButton.node, 'button', style['popup_button'], 'cancel');

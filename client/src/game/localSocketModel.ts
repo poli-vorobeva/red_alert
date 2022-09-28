@@ -2,7 +2,7 @@ import { BotCommander } from "../../../server/src/botCommander";
 import { IRegisteredPlayerInfo } from "../../../server/src/dto";
 import { GameModel } from "../../../server/src/gameModel";
 import { PlayerController } from "../../../server/src/playerController";
-import { IChatMsg, IUserItem, IGameUpdateResponse,ISendItemGame, IInitialData, } from './dto';
+import { IChatMsg, IUserItem, IGameUpdateResponse,ISendItemGame, IInitialData, IGameOptions, } from './dto';
 import { IGameObjectData, IObjectInfo } from "./dto";
 import { IClientModel } from './IClientModel'
 import { IVector, Vector } from '../../../common/vector'
@@ -31,8 +31,11 @@ export class LocalModel implements IClientModel
 
   }
 
-  addUser(players: number, initialData: IInitialData[][], credit: number) {
-    this.player = 'user' + Math.floor(Math.random() * 100);
+  addUser() {
+     this.player = 'user' + Math.floor(Math.random() * 100);
+  }
+
+  addInitialData({ players, initialData, credits, mapGame }: IGameOptions): Promise<string> {   
     const bots: IRegisteredPlayerInfo[] = new Array(players-1).fill(null).map((item, index) => {
       return {
         id: 'bot' + Math.floor(Math.random() * 100),
@@ -41,10 +44,11 @@ export class LocalModel implements IClientModel
       }
     });
     this.onAuth(this.player);
-    this.startGame(bots, initialData, credit);
+    this.startGame(bots, initialData, credits, mapGame);
+    return new Promise(resolve => resolve(''))
   }
 
-  startGame(playersInfo: IRegisteredPlayerInfo[], initialData: IInitialData[][], credits:number){
+  startGame(playersInfo: IRegisteredPlayerInfo[], initialData: IInitialData[][], credits: number, map: number[][]){
     console.log()
     const gamePlayersInfo = playersInfo.slice();
     gamePlayersInfo.push({
@@ -52,7 +56,7 @@ export class LocalModel implements IClientModel
       type: 'human',
       colorIndex: 1
     });
-    const game = new GameModel(gamePlayersInfo,  {map: this.map, builds: initialData, credits});
+    const game = new GameModel(gamePlayersInfo,  {map, builds: initialData, credits});
     const myPlayerController: PlayerController = new PlayerController(this.player, game);
     this.myPlayer = myPlayerController;
     const bots = playersInfo.map(it=> {
@@ -136,17 +140,13 @@ export class LocalModel implements IClientModel
 
   chatSend():Promise<string>{ return new Promise((r)=>r(''))}
   getUsersList():Promise<string>{ return new Promise((r)=>r(''))}
-  createGame():Promise<string>{ return new Promise((r)=>r(''))}
   
   //to map
   addBuild(name: string, position: Vector, playerId: string):Promise<string>{
     const result = this.myPlayer.addGameObject(name, position);
     return new Promise(resolve => resolve(result))
   }
-  addInitialData(name: string, position: Vector, playerId: string):Promise<string>{
-    const result = this.game.addGameObject(playerId,name, position);
-    return new Promise(resolve => resolve(result))
-  }
+
 
   setPrimary(id: string, name: string):Promise<string>{
     const result = this.myPlayer.setPrimary(id, name);
@@ -163,12 +163,6 @@ export class LocalModel implements IClientModel
     return new Promise(resolve => resolve(result));
   }
 
-  createMap(map: number[][]): Promise<string> {
-    this.map = map;
-
-   // const result = this.myPlayer.addInitialMap(map);
-    return new Promise((r) => r('createMap'));
-  }
 
   setAttackTarget(id: string, targetId: string):Promise<string>{
     const result = this.myPlayer.setAttackTarget(id, targetId);// , tileSize

@@ -5,7 +5,7 @@ import style from './settingsPageSingle.css'
 //import InfoPage from './infoPage';
 import Range from '../components/range'
 import { IVector } from '../../../common/vector';
-import { IGameOptions, IInitialData } from '../game/dto';
+import { IGameOptions, IInitialData, ISettings } from '../game/dto';
 
 
 
@@ -66,7 +66,7 @@ export class SettingsModel {
 
 export class SettingsPage extends Control {
   onBack: () => void;
-  onPlay: (settings: IGameOptions) => void;
+  onPlay: (settings: ISettings) => void;
   maps: IMapsData[];
   filteredMaps: IMapsData[];
   map: IMapsData;
@@ -248,7 +248,7 @@ export class SettingsPage extends Control {
 
     const playButton = new Control(buttonsWrapper.node, 'button', '', 'play');
     playButton.node.onclick = () => {
-      const settings:IGameOptions = {
+      const settings:ISettings = {
         map: this.mapData,//this.mapImage,
         credits: this.credit,
         initialData: this.initialData,

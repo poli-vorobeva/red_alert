@@ -55,8 +55,7 @@ export class Application extends Control{
     settings.onPlay = (setting) => { // передаем set параметры для настройки игры
       const imageData = getImageData(setting.map)
       const mapGame = getMapFromImageData(imageData);
-      this.socket.createMap(mapGame);
-      const info = new InfoPage(this.node, this.socket, setting);
+      const info = new InfoPage(this.node, this.socket, { ...setting, ...{ mapGame } });
       info.onStartGame = (data) => {
         settings.destroy();
         info.destroy();
@@ -89,7 +88,7 @@ export class Application extends Control{
           console.log('data-->', data);
           const imageData = getImageData(data.map)
           const mapGame = getMapFromImageData(imageData);
-          this.socket.createGame({...data,...{mapGame:mapGame}});
+          this.socket.addInitialData({...data,...{mapGame:mapGame}});
           this.socket.chatSend({user: 'system', msg: `new game create`}); //добавить название карты/игры
           settings.destroy();
         }

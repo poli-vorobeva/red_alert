@@ -23,11 +23,15 @@ export interface IInitialData {
     y: number;
   }
 }
-export interface IGameOptions {
+
+export interface ISettings{
   map: HTMLImageElement;
   credits: number;
   initialData: IInitialData[][];
   players: number;
+}
+export interface IGameOptions extends ISettings{
+  mapGame: number[][]
 }
 
 export interface IObject {

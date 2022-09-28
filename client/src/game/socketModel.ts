@@ -9,6 +9,7 @@ import {
   IUserItem,
   ISendItemGame,
   IGameOptions,
+  IInitialData,
 } from "./dto";
 import { IClientModel } from "./IClientModel";
 import session from "../application/session";
@@ -24,14 +25,14 @@ export class SocketModel implements IClientModel {
   onAddObject: (data: IGameObjectData) => void;
   onDeleteObject: (data: IGameObjectData) => void;
   onShot: (data: { position: IVector, id: string }) => void;
-  onChatMsg: (msg: IChatMsg) => void;  
-  onUsersList: (msg: IUserItem[]) => void;  
-  onGamesList: (msg: ISendItemGame[]) => void;  
+  onChatMsg: (msg: IChatMsg) => void;
+  onUsersList: (msg: IUserItem[]) => void;
+  onGamesList: (msg: ISendItemGame[]) => void;
   sendPrivateMessage: (content: { message: string, type: string }) => void;
 
   private messageHandler: (message: IServerResponseMessage) => void;
   private client: ClientSocket;
-  onMoveBullet: (data: { position: IVector, id: string })=> void;
+  onMoveBullet: (data: { position: IVector, id: string }) => void;
 
   constructor(client: ClientSocket) {
     this.client = client;
@@ -80,27 +81,27 @@ export class SocketModel implements IClientModel {
 
   //side
 
-  registerSpectator(gameID:number) {
+  registerSpectator(gameID: number) {
     this.client.sendMessage(
       "registerGamePlayer",
-      JSON.stringify({ gameID:gameID,playerType: "spectator" })
+      JSON.stringify({ gameID: gameID, playerType: "spectator" })
     );
   }
 
   addUser() {
-    this.client.sendMessage("auth", JSON.stringify({ user:session.user }));
+    this.client.sendMessage("auth", JSON.stringify({ user: session.user }));
   }
 
-  registerGamePlayer(gameID:number) {
+  registerGamePlayer(gameID: number) {
     this.client.sendMessage(
       "registerGamePlayer",
-      JSON.stringify({ gameID:gameID, playerType: "human" })
+      JSON.stringify({ gameID: gameID, playerType: "human" })
     );
   }
   
-  addInitialData(name: string, position: Vector, playerId: string):Promise<string>{
-      const content = JSON.stringify({ type: 'addInitialData', content: { name, playerId ,position} })
-    return this.client.sendMessage('gameMove', content);
+  addInitialData(msg: IGameOptions): Promise<string> {
+    const content = JSON.stringify(msg);
+    return this.client.sendMessage("createGame", content);
   }
 
   startBuild(name: string, playerId: string): Promise<string> {
@@ -187,10 +188,7 @@ export class SocketModel implements IClientModel {
     const content = JSON.stringify(msg);
     return this.client.sendMessage("chatSend", content);
   }
-  createGame(msg: IGameOptions): Promise<string> {
-    const content = JSON.stringify(msg);
-    return this.client.sendMessage("createGame", content);
-  }
+
   getUsersList(msg: IChatMsg): Promise<string> {
     const content = JSON.stringify(msg);
     return this.client.sendMessage("getUsersList", content);
@@ -200,11 +198,7 @@ export class SocketModel implements IClientModel {
     this.client.onMessage.remove(this.messageHandler);
   }
 
-  createMap(map: number[][]):Promise<string> {
-    // const content = JSON.stringify({map});
-    // return this.client.sendMessage('createMap', content);
-    return new Promise((res)=>res)
-  }
+ 
 
   //all game player methods
 }
