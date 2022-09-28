@@ -3,7 +3,7 @@ import { IObjectInfo } from "./dto";
 import { tech } from "./techTree";
 
 export class PlayerSide{
-  money:number = 50000;
+  money:number = 1000;
   buildings: IObjectInfo[] = [];
   buildsInGame: string[] = [];
   onUpdate:(data: string)=>void;
@@ -11,8 +11,11 @@ export class PlayerSide{
   
   id: string;
   buildsInProgress: BuildingProgress[] = [];
-  constructor(id: string){
+  constructor(id: string, credits: number) {
+   
     this.id = id;
+    this.money = credits;
+    console.log(this.money)
     this.buildings = tech.object.map(item => {
       const newItem = {
         deps: item.deps,

@@ -8,6 +8,7 @@ import { gameObjects } from "./gameObjects/gameObjectsMap";
 import { AbstractBuildObject } from "./gameObjects/builds/abstractBuildObject";
 import { TilesCollection } from "./tileCollection";
 import { findClosestBuild } from "./distance";
+import { IInitialData } from "./gameServer";
 
 
 const BUILDS = ["buildingCenter",
@@ -40,7 +41,7 @@ export class GameModel{
   tilesCollection: TilesCollection;
   onMoveBullet: (point: Vector, id: string) => void;;
   
-  constructor(players: IRegisteredPlayerInfo[], state: { map: number[][], builds: any }) {
+  constructor(players: IRegisteredPlayerInfo[], state: { map: number[][], builds: IInitialData[][], credits:number }) {
     this.tickList = new TickList();
     this.tilesCollection=new TilesCollection()
     this.players = players;
@@ -48,7 +49,7 @@ export class GameModel{
     this.builds = state.builds;
     this.nextId = createIdGenerator('object');
     this.players.forEach(item => {
-      const playerSide = new PlayerSide(item.id);
+      const playerSide = new PlayerSide(item.id, state.credits);
       this.tickList.add(playerSide);
       playerSide.onUpdate = (data)=>{
         this.onSideUpdate(item.id, data)

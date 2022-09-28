@@ -33,7 +33,7 @@ export default class Range extends Control {
     this.inputUp.node.oninput = (e:any) => {
       //this.setGradient();
       this.setValueToSpan();
-      this.onChange(e.target.value);
+      this.onChange(+e.target.value);
 
       // if (+this.inputUp.node.value > +this.inputDown.node.value) {
       //   this.inputDown.node.value = this.inputUp.node.value;
@@ -62,6 +62,11 @@ export default class Range extends Control {
   setValueToSpan() {
     //this.maxValueText.node.textContent = this.inputDown.node.value;
     this.maxValueText.node.textContent = this.inputUp.node.value;
+  }
+
+  setValue(value:string) {
+    this.inputUp.node.value = value;
+    this.setValueToSpan();
   }
   setGradient() {
     const changeValueUp = (+this.inputUp.node.value - +this.inputUp.node.min) * 100 / (+this.inputUp.node.max - +this.inputUp.node.min);

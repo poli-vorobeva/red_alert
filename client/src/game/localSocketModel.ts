@@ -41,10 +41,10 @@ export class LocalModel implements IClientModel
       }
     });
     this.onAuth(this.player);
-    this.startGame(bots, initialData);
+    this.startGame(bots, initialData, credit);
   }
 
-  startGame(playersInfo: IRegisteredPlayerInfo[], initialData: IInitialData[][]){
+  startGame(playersInfo: IRegisteredPlayerInfo[], initialData: IInitialData[][], credits:number){
     console.log()
     const gamePlayersInfo = playersInfo.slice();
     gamePlayersInfo.push({
@@ -52,7 +52,7 @@ export class LocalModel implements IClientModel
       type: 'human',
       colorIndex: 1
     });
-    const game = new GameModel(gamePlayersInfo,  {map: this.map, builds: initialData});
+    const game = new GameModel(gamePlayersInfo,  {map: this.map, builds: initialData, credits});
     const myPlayerController: PlayerController = new PlayerController(this.player, game);
     this.myPlayer = myPlayerController;
     const bots = playersInfo.map(it=> {

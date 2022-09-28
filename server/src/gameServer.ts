@@ -30,9 +30,9 @@ export class GameServer {
 
   players: (HumanCommander | BotCommander|SpectatorCommander)[] = [];
   gameModel: GameModel;
-  map: number[][] =[];  
+
   private _settings:IGameOptions; 
-  initialData: IInitialData[][];
+
   constructor(props:IGameOptions){
     this._settings = props;
   }
@@ -45,12 +45,10 @@ export class GameServer {
     if (this.registeredPlayersInfo.find((x) => x.id === userId)) {
       return {successfully:false};
     } else {
-      this.map = settings.mapGame;
-      this.initialData = settings.initialData;
       const colorIndex = this.registerPlayer.length + 1; // цвет игрока
       this.registeredPlayersInfo.push({ type, id: userId, connection, colorIndex });
-      if (this.registeredPlayersInfo.filter(item=>item.type ==='human'||item.type ==='bot').length >= 2) {
-        this.startGame();
+      if (this.registeredPlayersInfo.filter(item=>item.type ==='human'||item.type ==='bot').length >= settings.players) {
+        this.startGame(settings);
       }
       return {successfully:true};
     }
@@ -71,8 +69,8 @@ export class GameServer {
     }
   }
 
-  startGame() {
-    this.gameModel = new GameModel(this.registeredPlayersInfo, { map: this.map, builds: this.initialData });
+  startGame({ mapGame, initialData, credits }: ISendItem) {
+    this.gameModel = new GameModel(this.registeredPlayersInfo, { map: mapGame, builds: initialData, credits: credits });
     this.players = this.registeredPlayersInfo.map(it=> {
       const playerController = new PlayerController(it.id, this.gameModel);
       if (it.type === 'bot') {

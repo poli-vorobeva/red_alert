@@ -86,7 +86,7 @@ export class SettingsPage extends Control {
       this.nameUser = name;
     }
 
-    this.credit = 10000;/*initialSettings.credits;*/
+    this.credit = 5000;/*initialSettings.credits;*/
     this.loadMapsData().then(result => {
       this.map = this.maps[0];
        this.render(/*socket*/);
@@ -106,7 +106,13 @@ export class SettingsPage extends Control {
     // }
     const money = new Range(basicSettingsWrapper.node,
       'money', 
-      '0', '10000', '1000', '0', '10000');
+      '1000', '10000', '1000', '1000', '10000');
+
+    money.onChange = (value) => {
+      this.credit = value;
+    }
+
+    money.setValue('5000')
 
     //const speedWrapper = new Control(basicSettingsWrapper.node, 'div', style["item_wrapper"]);
     const playersdLabel = new Control<HTMLLabelElement>(basicSettingsWrapper.node, 'label', style['item_settings'], 'Players')
@@ -120,11 +126,10 @@ export class SettingsPage extends Control {
     // }
 
     const playersInput = new Range(basicSettingsWrapper.node,
-      'speed', 
+      'players', 
       '2', '4', '1', '2', '4');
     playersInput.onChange = (value)=>{
       this.players = value;
-      console.log(this.players);
     }
       
 

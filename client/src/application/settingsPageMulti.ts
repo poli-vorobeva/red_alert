@@ -3,6 +3,7 @@ import {  IInitialData } from "../game/dto";
 import { IClientModel } from "../game/IClientModel";
 import mapsData from "../game/maps.json";
 import style from "./settingsPage.css";
+import Range from '../components/range'
 
 export interface IMapsData {
   size: string,
@@ -79,7 +80,7 @@ export class Settings extends Control {
   initialData: IInitialData[][]
   players: number = 2;
   //mapImage: HTMLImageElement;
-  credit: number;
+  credit: number = 5000;
   // onStartGame: (players: string) => void;
   // onAuth: (name:string) => void;
   nameUser: string;
@@ -130,51 +131,33 @@ export class Settings extends Control {
       "div",
       style["item_wrapper"]
     );
-    const moneyLabel = new Control<HTMLLabelElement>(
-      moneyWrapper.node,
-      "label",
-      "",
-      "Кредит"
-    );
-    const moneyInput = new Control<HTMLInputElement>(
-      moneyWrapper.node,
-      "input",
-      style["input_settings"]
-    );
-    moneyInput.node.type = "text";
-    moneyInput.node.value = "10000";
-    moneyInput.node.onchange = () => {
-      this.credit = Number(moneyInput.node.value);
-    };
+    const moneyLabel = new Control<HTMLLabelElement>(moneyWrapper.node, 'label', style['item_settings'], 'Your credit')
 
-    const speedWrapper = new Control(
+    const money = new Range(moneyWrapper.node,
+      'money',
+      '1000', '10000', '1000', '1000', '10000');
+
+    money.onChange = (value) => {
+      this.credit = value;
+    }
+
+    money.setValue('5000');
+
+    const playerWrapper = new Control(
       basicSettingsWrapper.node,
       "div",
       style["item_wrapper"]
     );
-    const speedLabel = new Control<HTMLLabelElement>(
-      speedWrapper.node,
-      "label",
-      "",
-      "Players"
-    );
-    const speedInput = new Control<HTMLInputElement>(
-      speedWrapper.node,
-      "select",
-      style["input_settings"],
-      "7"
-    );
-    for (let i = 1; i <= 7; i++) {
-      const speedValue = new Control<HTMLOptionElement>(
-        speedInput.node,
-        "option",
-        style[""],
-        `${i}`
-      );
-      speedValue.node.value = i.toString();
-      speedValue.node.onclick = () => {
-      };
+    const playersdLabel = new Control<HTMLLabelElement>(playerWrapper.node, 'label', style['item_settings'], 'Players')
+
+
+    const playersInput = new Range(playerWrapper.node,
+      'speed',
+      '2', '4', '1', '2', '4');
+    playersInput.onChange = (value) => {
+      this.players = value;
     }
+
 
     const selectedMapWrapper = new Control(
       basicSettingsWrapper.node,
