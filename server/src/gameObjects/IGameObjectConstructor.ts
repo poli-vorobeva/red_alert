@@ -5,5 +5,5 @@ import { GameObject } from "./gameObject";
 import { AbstractUnitObject } from "./units/abstractUnitObject";
 
 export interface IGameObjectConstructor{
-  new (objects:Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }):AbstractUnitObject|AbstractBuildObject
+  new(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string, colorIndex: number }):AbstractUnitObject|AbstractBuildObject
 }

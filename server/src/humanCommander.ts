@@ -19,7 +19,7 @@ export class HumanCommander{
       return this.playerController.startBuilding(message.content.name);
     }
     if (message.type === 'addBuild') {
-      return this.playerController.addGameObject(message.content.name, message.content.position);
+      return this.playerController.addGameObject(message.content.name, message.content.position, this.playerController.colorIndex);
     }
     if(message.type ==='setPrimary'){
       return this.playerController.setPrimary(message.content.id, message.content.name);
@@ -43,7 +43,7 @@ export class HumanCommander{
       return this.playerController.addInitialMap(message.content.map);
     }
     if (message.type === 'addUnit') {
-      return this.playerController.addUnit(message.content.name,message.content.spawn, message.content.playerId);
+      return this.playerController.addUnit(message.content.name, message.content.spawn, message.content.playerId, message.content.colorIndex);
     }
   }
 

@@ -17,7 +17,8 @@ export class AbstractUnitObject extends GameObject {
     health: null,
     playerId: null,
     action: "idle",
-    target: null
+    target: null,
+    colorIndex: null,
   };
   onUpdate: (state: IGameObjectData) => void;
   onCreate: (state: IGameObjectData) => void;
@@ -37,7 +38,7 @@ export class AbstractUnitObject extends GameObject {
   playerSides: PlayerSide[];
   damagePower: number = 10;
 
-  constructor(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }) {
+  constructor(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string,colorIndex:number }) {
     super();
     this.objects = objects;
     this.data.position = Vector.fromIVector(state.position);
@@ -47,6 +48,7 @@ export class AbstractUnitObject extends GameObject {
     this.objectId = objectId;
     this.target = null
     this.path = [];
+    this.data.colorIndex = state.colorIndex;
     
     this.weapon = new AbstractWeapon(AbstractBullet, this.attackRadius, 1500, this.objectId);
     this.weapon.moveBullet = (position: Vector, id: string) => {

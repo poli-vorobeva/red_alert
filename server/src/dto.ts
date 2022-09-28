@@ -49,7 +49,8 @@ export interface IGameObjectContent{
   primary?: boolean;
   action?: string;
   target?: Vector; 
-  buildMatrix?: number[][],
+  buildMatrix?: number[][];
+  colorIndex?:number
 }
 export interface IGameObjectData{  
   type: string;//name
@@ -66,6 +67,7 @@ export interface IStartGameResponse {
   sidePanel: ISidePanelData;
   players: string[];
   type?: 'bot' | 'human' | 'spectator',
+  colorIndex: number;
 }
 
 export interface IUpdateSidePanel{

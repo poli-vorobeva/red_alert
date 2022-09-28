@@ -7,7 +7,7 @@ export class Soldier extends AbstractUnitObject{
 attackRadius: number = 5;
   findRadius: number = 8;
   damegePower = 10;
-constructor(objects:Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }) {
+  constructor(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string, colorIndex: number }) {
     super(objects, playerSides, objectId, type, state);
   }
 }

@@ -10,7 +10,7 @@ import { AbstractUnitObject } from './abstractUnitObject';
 export class Truck extends AbstractUnitObject{
   money: number;
   damagePower = 0;
-  constructor(objects:Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }) {
+  constructor(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string, colorIndex: number }) {
     super(objects, playerSides, objectId, type, state);
     this.attackRadius = 2;
     this.money = 0;

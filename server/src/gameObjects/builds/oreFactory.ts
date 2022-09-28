@@ -6,7 +6,7 @@ import { AbstractBuildObject } from './abstractBuildObject';
 import { Truck } from '../units/truck';
 
 export class OreFactory extends AbstractBuildObject{
-  constructor(objects:Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }) {
+  constructor(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string, colorIndex: number }) {
     super(objects, playerSides, objectId, type, state);
   } 
 

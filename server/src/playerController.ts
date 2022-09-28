@@ -4,10 +4,12 @@ import { GameModel } from "./gameModel";
 export class PlayerController{
   gameModel: GameModel;
   playerId: string;
+  colorIndex: number;
   
-  constructor(playerId:string, gameModel:GameModel){
+  constructor(playerId:string, gameModel:GameModel, colorIndex:number){
     this.gameModel = gameModel;
     this.playerId = playerId;
+    this.colorIndex = colorIndex;
   }
 
   //  на сайд панели постройку запускает
@@ -24,16 +26,17 @@ export class PlayerController{
   }
 
   // Добавление объекта на канвас
-  addGameObject(objectType: string, position: IVector) {
-    const result = this.gameModel.addGameObject(this.playerId, objectType, position);
+  addGameObject(objectType: string, position: IVector, colorIndex:number) {
+    console.log(colorIndex)
+    const result = this.gameModel.addGameObject(this.playerId, objectType, position, colorIndex);
     // if(result !== 'false'){
     //   console.log("%c"+this.playerId+ ' строит '+ objectType+ ': '+position.x+': '+position.y, 'color: blue')
     // }
     return result;
   }
 
-  addUnit(name: string, spawn: string, id: string) {
-    return this.gameModel.addUnit(name,spawn, id);
+  addUnit(name: string, spawn: string, id: string, colorIndex:number) {
+    return this.gameModel.addUnit(name,spawn, id, colorIndex);
   }
 
   moveUnits(unitId:string, target:IVector){
@@ -63,7 +66,7 @@ export class PlayerController{
   
   addInitialData(name: string, playerId: string, position: IVector) {
     if (playerId === this.playerId) {
-      return this.gameModel.addGameObject(this.playerId,name, position)
+      return this.gameModel.addGameObject(this.playerId,name, position,this.colorIndex)
     }
   }
   addInitialMap(map:number[][]){

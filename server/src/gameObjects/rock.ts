@@ -11,7 +11,7 @@ export class RockGameObject extends GameObject{
   onCreate: (state: IGameObjectData) => void;
   onDelete: (state: IGameObjectData) => void;
   playerSides: PlayerSide[];
-  constructor(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }) {
+  constructor(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string, colorIndex: number }) {
     super();
     this.data.position = Vector.fromIVector(state.position);
     this.objectId = objectId;

@@ -11,7 +11,7 @@ export class DefendTower extends AbstractBuildObject{
   targetId: string;
   weapon: AbstractWeapon;
   damagePower = 10;
-  constructor(objects:Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }) {
+  constructor(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string, colorIndex: number }) {
     super(objects, playerSides, objectId, type, state);
     
     this.weapon = new AbstractWeapon(AbstractBullet, this.attackRadius, 2000, this.objectId);

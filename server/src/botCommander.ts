@@ -23,9 +23,11 @@ export class BotCommander{
   stepBuilding: number = 1; // номер круга постройки  
   minDistance: number = 2; // Минимально допустимое расстояние для постройки
   objectData: Record<string, IGameObjectData> = {};
+  colorIndex: number;
 
-  constructor(playerController:PlayerController){
+  constructor(playerController:PlayerController, colorIndex: number){
     this.playerController = playerController;
+    this.colorIndex = colorIndex;
     this.tickList = new TickList()
     this.tickList.add(this);
   }
@@ -75,7 +77,7 @@ export class BotCommander{
           this.circlePoints.pop();
           let vector = new Vector(lastEl.x/2, lastEl.y/2)
           let currentPointAdd = vector.clone().add(vector) // надо клонировать?
-          this.playerController.addGameObject(buildsIsReady[Math.floor(Math.random() * buildsIsReady.length)].object.name, currentPointAdd); // this.startPoint
+          this.playerController.addGameObject(buildsIsReady[Math.floor(Math.random() * buildsIsReady.length)].object.name, currentPointAdd, this.colorIndex); // this.startPoint
         }
       }
     }

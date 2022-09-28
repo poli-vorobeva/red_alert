@@ -7,14 +7,16 @@ export class PlayerSide{
   buildings: IObjectInfo[] = [];
   buildsInGame: string[] = [];
   onUpdate:(data: string)=>void;
-  onReady: (objectType: string, objectSubType: string, spawn: string) => void;
+  onReady: (objectType: string, objectSubType: string, spawn: string, colorIndex: number) => void;
   
   id: string;
   buildsInProgress: BuildingProgress[] = [];
-  constructor(id: string, credits: number) {
+  colorIndex: number;
+  constructor(id: string, credits: number, colorIndex: number) {
    
     this.id = id;
     this.money = credits;
+    this.colorIndex = colorIndex;
     console.log(this.money)
     this.buildings = tech.object.map(item => {
       const newItem = {
@@ -110,7 +112,7 @@ export class PlayerSide{
             if (item.isReady) {
               this.buildings.find(it => it.object === item.object.object).status = 'isReady';
               this.buildsInProgress = this.buildsInProgress.filter(it => item != it);
-              this.onReady(item.object.object.name, item.object.object.subType, item.object.object.spawn)
+              this.onReady(item.object.object.name, item.object.object.subType, item.object.object.spawn, this.colorIndex)
             }
           }
          

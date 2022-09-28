@@ -49,14 +49,14 @@ export class GameModel{
     this.builds = state.builds;
     this.nextId = createIdGenerator('object');
     this.players.forEach(item => {
-      const playerSide = new PlayerSide(item.id, state.credits);
+      const playerSide = new PlayerSide(item.id, state.credits, item.colorIndex);
       this.tickList.add(playerSide);
       playerSide.onUpdate = (data)=>{
         this.onSideUpdate(item.id, data)
       }
-      playerSide.onReady = (type, subType, spawn) => {
+      playerSide.onReady = (type, subType, spawn, colorIndex) => {
         if (subType === 'unit') {
-          return this.addUnit(type, spawn, item.id);
+          return this.addUnit(type, spawn, item.id, colorIndex);
         }
         //send response onReady to player
       }     
@@ -95,12 +95,12 @@ export class GameModel{
 
 
 
-  addUnit(type: string, spawn: string, playerId: string) {
+  addUnit(type: string, spawn: string, playerId: string, colorIndex: number) {
     const el = this.gameObjects.find(item => item.data.playerId === playerId && item.type === spawn && item.data.primary);
     if (el) {
       const position = el.data.position;
       const newPosition = position.clone();
-      this.addGameObject(playerId, type, newPosition);
+      this.addGameObject(playerId, type, newPosition, colorIndex);
       return 'true';
     }
     return 'false';
@@ -117,7 +117,7 @@ export class GameModel{
   addInitialObject(playerId:string, objectName:string, position:IVector){
     const state = { position, playerId }
     const gameObjectConstructor = gameObjects[objectName];
-    const gameObject = new gameObjectConstructor(this.objects, this.playersSides, this.nextId(), objectName, state);
+    const gameObject = new gameObjectConstructor(this.objects, this.playersSides, this.nextId(), objectName, { ...state, ...{ colorIndex:100 } });
     gameObject.setMap(this.tilesCollection)
     this.mapForBuilds[position.x][position.y] = -1;
     
@@ -151,12 +151,12 @@ export class GameModel{
   }
 
   //player methods
-  addGameObject(playerId: string, objectName: string, position: IVector) {
+  addGameObject(playerId: string, objectName: string, position: IVector, colorIndex: number) {
    // console.log(position, playerId)
     if (this.checkBuilding(position, playerId) || !BUILDS.includes(objectName)) {
       const state = { position, playerId }
       const gameObjectConstructor = gameObjects[objectName];
-      const gameObject = new gameObjectConstructor(this.objects, this.playersSides, this.nextId(), objectName, state);
+      const gameObject = new gameObjectConstructor(this.objects, this.playersSides, this.nextId(), objectName, {...state,...{colorIndex}});
       gameObject.setMap(this.tilesCollection)
 
       gameObject.onUpdate = (state)=>{
@@ -308,7 +308,7 @@ export class GameModel{
   createBuilds(builds: any) {
     this.players.forEach((player, index) => {
       builds[index].forEach((build: any)=> {
-        this.addGameObject(player.id, build.name, build.position)
+        this.addGameObject(player.id, build.name, build.position, player.colorIndex)
       })
     })
   }

@@ -30,6 +30,7 @@ export class GameServer {
 
   players: (HumanCommander | BotCommander|SpectatorCommander)[] = [];
   gameModel: GameModel;
+  colorIndex = 0;
 
   private _settings:IGameOptions; 
 
@@ -41,12 +42,12 @@ export class GameServer {
   getPlayersInfo():IRegisteredPlayerInfo[]{ return this.registeredPlayersInfo }; // при регистрации приходит тип: бот, human, зритель
   
   registerPlayer(type:'bot'|'human'|'spectator', userId:string, connection:Session, settings: ISendItem){ // регистрация игрока
-    
     if (this.registeredPlayersInfo.find((x) => x.id === userId)) {
       return {successfully:false};
     } else {
-      const colorIndex = this.registerPlayer.length + 1; // цвет игрока
-      this.registeredPlayersInfo.push({ type, id: userId, connection, colorIndex });
+      console.log('colorIndex', this.colorIndex)
+      this.registeredPlayersInfo.push({ type, id: userId, connection, colorIndex: this.colorIndex });
+      this.colorIndex++;
       if (this.registeredPlayersInfo.filter(item=>item.type ==='human'||item.type ==='bot').length >= settings.players) {
         this.startGame(settings);
       }
@@ -59,10 +60,11 @@ export class GameServer {
     if(user){
       const index = this.registeredPlayersInfo.indexOf(user);
       this.registeredPlayersInfo.splice(index,1);
-      this.registeredPlayersInfo.map((item, index) =>{
-        item.colorIndex = index + 1;
-        return item;
-      })
+      // this.registeredPlayersInfo.map((item, index) =>{
+      //   item.colorIndex = index + 1;
+      //   return item;
+      // })
+      this.colorIndex--;
       return {successfully:true};
     } else {
       return {successfully:false};
@@ -72,9 +74,9 @@ export class GameServer {
   startGame({ mapGame, initialData, credits }: ISendItem) {
     this.gameModel = new GameModel(this.registeredPlayersInfo, { map: mapGame, builds: initialData, credits: credits });
     this.players = this.registeredPlayersInfo.map(it=> {
-      const playerController = new PlayerController(it.id, this.gameModel);
+      const playerController = new PlayerController(it.id, this.gameModel, it.colorIndex);
       if (it.type === 'bot') {
-        return new BotCommander(playerController );
+        return new BotCommander(playerController, it.colorIndex );
       } else if (it.type === 'human') {
         return new HumanCommander(playerController, it.connection);
       } else if (it.type === 'spectator') {
@@ -121,7 +123,7 @@ export class GameServer {
     this.players.forEach(item => {
       const sidePanel = this.gameModel.getState(item.playerController.playerId);
       const type = item instanceof BotCommander ? 'bot' : item instanceof HumanCommander ? 'human' : 'spectator';
-      const response: IStartGameResponse = { players: allPlayers, sidePanel, type}
+      const response: IStartGameResponse = { players: allPlayers, sidePanel, type,colorIndex: item.playerController.colorIndex}
 
       item.sendMessage('startGame', JSON.stringify(response));
       

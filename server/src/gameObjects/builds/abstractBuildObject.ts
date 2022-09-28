@@ -10,6 +10,7 @@ export class AbstractBuildObject extends GameObject{
     playerId: null,
      primary: false,
      buildMatrix: null,
+     colorIndex: null
   };
   onUpdate: ( state: IGameObjectData) => void;
   onCreate: (state: IGameObjectData) => void;
@@ -22,11 +23,12 @@ export class AbstractBuildObject extends GameObject{
   type: string;
   playerSides: PlayerSide[];
 
-  constructor(objects:Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }) {
+  constructor(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string, colorIndex: number }) {
     super();
     this.data.position = Vector.fromIVector(state.position);
     this.data.playerId = state.playerId;
     this.data.health = 100;
+    this.data.colorIndex = state.colorIndex;
     this.type = type;
     this.objects = objects;
     this.objectId = objectId;
