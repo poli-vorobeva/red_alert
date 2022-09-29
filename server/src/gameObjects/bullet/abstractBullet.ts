@@ -32,11 +32,6 @@ export class AbstractBullet {
     }
   }
 
-  delete() {
-    this.onTarget?.(this.id);
-    this.isDestroyed = true;
-  }
-
   // render(ctx:CanvasRenderingContext2D, camera:Vector){
   //   if (this.isDestroyed) return;
 
