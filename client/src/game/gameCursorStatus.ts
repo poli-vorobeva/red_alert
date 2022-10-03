@@ -6,6 +6,8 @@ import { InteractiveObject } from './builds_and_units/interactiveObject';
 import { Rock } from './builds_and_units/rock';
 import { InteractiveList } from './interactiveList';
 import { findClosestBuild } from './distance';
+import { OreFactory } from './builds_and_units/builds/oreFactory';
+import { Truck } from './builds_and_units/units/truck';
 
 export class GameCursorStatus{
   pixelPosition:Vector = new Vector(0, 0);
@@ -48,8 +50,9 @@ export class GameCursorStatus{
       if (!this.hovered.length && this.selected[0].playerId === this.playerId) {
         action = 'move';
       } else if (!this.hovered.length) {
-        action = 'select';
-      } else if (this.hovered[0].playerId != this.playerId && !(this.hovered[0] instanceof Rock)) {
+        action = 'select';      
+      } else if ((this.hovered[0].playerId != this.playerId && !(this.hovered[0] instanceof Rock) && !(this.selected[0] instanceof Truck))
+        || (this.hovered[0].playerId === this.playerId && this.selected[0] instanceof Truck && this.hovered[0] instanceof OreFactory)){
         action = 'attack';
       }
     } else if ((this.selected[0] instanceof AbstractBuild)) {

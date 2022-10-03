@@ -45,7 +45,6 @@ export class GameServer {
     if (this.registeredPlayersInfo.find((x) => x.id === userId)) {
       return {successfully:false};
     } else {
-      console.log('colorIndex', this.colorIndex)
       this.registeredPlayersInfo.push({ type, id: userId, connection, colorIndex: this.colorIndex });
       this.colorIndex++;
       if (this.registeredPlayersInfo.filter(item=>item.type ==='human'||item.type ==='bot').length >= settings.players) {

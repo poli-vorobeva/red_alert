@@ -29,7 +29,7 @@ export class BotCommander{
     this.playerController = playerController;
     this.colorIndex = colorIndex;
     this.tickList = new TickList()
-    this.tickList.add(this);
+   // this.tickList.add(this);
   }
   
   private handleClientMessage(type: string, message: string) {   // Обработка данных с клиента

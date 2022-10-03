@@ -17,7 +17,6 @@ export class PlayerSide{
     this.id = id;
     this.money = credits;
     this.colorIndex = colorIndex;
-    console.log(this.money)
     this.buildings = tech.object.map(item => {
       const newItem = {
         deps: item.deps,

@@ -114,7 +114,8 @@ export class Game extends Control{
           console.log(result,'UNIT');
         });
     }
-  canvas.onAttack = (id: string, targetId: string) => {
+    canvas.onAttack = (id: string, targetId: string) => {
+    console.log('attack', id, targetId)
       socket.setAttackTarget(id, targetId).then((result) => {
         console.log(result)
       })

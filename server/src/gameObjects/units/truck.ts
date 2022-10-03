@@ -21,7 +21,7 @@ export class Truck extends AbstractUnitObject{
       if (this.data.action === 'attack'&&this.objects[this.targetId]) {
         if (this.objects[this.targetId].subType === 'gold') {
           this.money += 200;
-        }else{
+        } else if (this.objects[this.targetId] instanceof OreFactory && this.getState().playerId === this.objects[this.targetId].getState().playerId) {
           this.money = 0;
           this.data.action = 'idle'
         }

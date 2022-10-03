@@ -17,6 +17,8 @@ import { Gold } from "../builds_and_units/gold";
 import { Rock } from "../builds_and_units/rock";
 import { AbstractUnit } from "../builds_and_units/units/abstractUnit";
 import { Bullet } from '../builds_and_units/bullet';
+import { OreFactory } from "../builds_and_units/builds/oreFactory";
+import { Truck } from "../builds_and_units/units/truck";
 export class GameMainRender{
   tilingLayer: TilingLayer; 
   camera: Camera;
@@ -72,9 +74,12 @@ export class GameMainRender{
       this.cursorStatus.hovered = currentTarget ? [currentTarget] : [];
     }
 
-    this.interactiveList.onClick = (current) => {   
-      this.interactiveList.list.filter(item=>item.playerId===this.playerId).forEach(item => item.deleteSelected());
-      if (current&&current.playerId === this.playerId) {
+    this.interactiveList.onClick = (current) => {  
+      if (this.cursorStatus.selected[0] instanceof Truck && current instanceof OreFactory) {
+        this.setSelected(this.cursorStatus.selected[0].id);    
+    
+      } else if (current && current.playerId === this.playerId) {
+        this.interactiveList.list.filter(item => item.playerId === this.playerId).forEach(item => item.deleteSelected());
         this.setSelected(current.id)
         this.cursorStatus.selected = current ? [current] : [];  
       }      
@@ -198,6 +203,7 @@ export class GameMainRender{
   deleteObject(data: IGameObjectData) {
     const interactiveObject = this.interactiveList.list.find(item => item.id === data.objectId);
     this.changeBuildsMap(interactiveObject, data, 0);
+    this.interactiveList.remove(data.objectId)
     interactiveObject.destroy();
   }
 
@@ -238,12 +244,14 @@ export class GameMainRender{
     if (this.preventSelect){
         this.preventSelect = false;
         return;
-      } 
+    } 
+    
    
-    this.interactiveList.list.filter(item=>item.playerId===this.playerId).forEach(item => item.deleteSelected());
+    //this.interactiveList.list.filter(item=>item.playerId===this.playerId).forEach(item => item.deleteSelected());
     this.interactiveList.handleClick(this.camera.getTileVector(this.camera.position.clone().add(cursor)) ,this.camera.position.clone().add(cursor))
+
     const action = this.cursorStatus.getAction();
-    // console.log(action)
+     console.log(action)
     if (action === 'build') {
       this.onAddBuild?.(this.camera.getTileVector(this.camera.position.clone().add(cursor)),this.cursorStatus.planned.name);
     }
@@ -256,12 +264,14 @@ export class GameMainRender{
         //отправлять на сервер this.cursorPosition
         //когда приходит ответ - запускать патч
         //this.cursorStatus.selected.forEach(item => (item as AbstractUnit).moveUnit(this.cursorPosition))
-        this.interactiveList.list.filter(item => item.playerId === this.playerId&&item.selected===true).map(item=>item.deleteSelected());
+        //this.interactiveList.list.filter(item => item.playerId === this.playerId&&item.selected===true).map(item=>item.deleteSelected());
         this.cursorStatus.selected = [];
     }
     if (action === 'attack') {
+      //console.log(this.interactiveList.list.filter(item => (item.playerId === this.playerId && item.info.selected === true)))
       this.cursorStatus.selected.forEach(item => this.onAttack(item.id, this.hoveredObjects.id));
-      this.interactiveList.list.filter(item => item.playerId === this.playerId&&item.selected===true).map(item=>item.deleteSelected());
+     this.interactiveList.list.filter(item => (item.playerId === this.playerId && item.info.selected === true))
+        .map(item => item.deleteSelected());
       this.cursorStatus.selected = [];
     }
     
