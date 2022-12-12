@@ -4,7 +4,10 @@ import { GameObject } from '../gameObject';
 import { AbstractUnitObject } from './abstractUnitObject';
 
 export class Dog extends AbstractUnitObject{
-  constructor(objects:Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }) {
+  attackRadius: number = 2;
+  findRadius: number = 5;
+  damegePower = 5;
+  constructor(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string, colorIndex: number }) {
     super(objects, playerSides, objectId, type, state);
   }
 }

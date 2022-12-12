@@ -21,17 +21,53 @@ export class AbstractBuild extends InteractiveObject{
   health: number;
   info: BuildingInfoView;
   infoLayer: any;
-  private tileMap: number[][];
-  constructor(layer:TilingLayer, infoLayer:BoundingLayer, res:Record<string, HTMLImageElement>, camera: Camera, data: IGameObjectData){
+  tileMap: number[][];
+  color: string;
+
+  constructor(layer:TilingLayer, infoLayer:BoundingLayer, res:Record<string, HTMLImageElement>, camera: Camera, data: IGameObjectData, color: string){
     super();
+
     this.id = data.objectId;
     this.name = data.type;
     this.infoLayer = infoLayer;
-    this.position = data.content.position;
+    this.position =  Vector.fromIVector(data.content.position);
     this.playerId = data.content.playerId;
     this.primary = data.content.primary;
+
     this.health = data.content.health;
     this.camera = camera;
+    const tileMap = data.content.buildMatrix;
+    const pos = Vector.fromIVector(data.content.position);
+    const colors = ['#f00', '#ff0', '#00f', '#0f0', '#ffa500'];
+    this.color = color;
+   
+
+    this.info = new BuildingInfoView(pos, res["barrack"], this.name, this.health, this.playerId, this.primary, this.color);
+    this.info.update();
+    this.infoLayer.addObject(this.info);
+    
+    tileMap.forEach((it,i)=>it.forEach((jt, j)=>{
+      const tilePos = pos.clone().add(new Vector(j, i));
+      if (!tileMap[i][j]){
+        return;
+      }     
+      const tile = new TileObject(1, tilePos);
+      // tile.onMouseEnter = ()=>{
+      //   this.hovBalance+=1;
+      // }
+
+      // tile.onMouseLeave = ()=>{
+      //   this.hovBalance -= 1;
+      // }
+
+      tile.onUpdate = ()=>{
+        layer.updateCacheTile(layer.camera, tilePos.x, tilePos.y, tile.tileType);
+      }
+      tile.onUpdate();
+      
+      this.tiles.push(tile);
+    }));
+    this.tileMap = tileMap;
     // const tileMap = [
     //   [0,0,0,0],
     //   [0,1,1,0],
@@ -103,26 +139,27 @@ export class AbstractBuild extends InteractiveObject{
   }
 
   processMove(cursor:Vector){
-    let lastBalance = this.hovBalance;
-    this.tiles.forEach(it=>it.processMove(cursor));
-    if (lastBalance !==this.hovBalance){
-      if (this.hovBalance == 0){
-        this.tiles.forEach(it1=>it1.tileType = 1);
-      } else if (this.hovBalance == 1){
-        this.tiles.forEach(it1=>it1.tileType = 0);
-      }
-    }
+    // let lastBalance = this.hovBalance;
+    // this.tiles.forEach(it=>it.processMove(cursor));
+    // if (lastBalance !==this.hovBalance){
+    //   if (this.hovBalance == 0){
+    //     this.tiles.forEach(it1=>it1.tileType = 1);
+    //   } else if (this.hovBalance == 1){
+    //     this.tiles.forEach(it1=>it1.tileType = 0);
+    //   }
+    // }
   }
 
   inShape(tile: Vector, cursor: Vector): boolean {
     if (this.tiles.find(it => it.inShape(tile))) {
+      this.tiles.forEach(it1=>it1.tileType = 0);
       return true;
     }
+    this.tiles.forEach(it1=>it1.tileType = 1);
     return false;
   }
   
   updateObject(data: IGameObjectContent) {
-    this.position = data.position;
     this.playerId = data.playerId;
     this.primary = data.primary;
     this.health = data.health;
@@ -130,6 +167,13 @@ export class AbstractBuild extends InteractiveObject{
     this.info.health = data.health;
     this.info.update();
     this.infoLayer.updateObject(this.info)
+  }
+
+  destroy(): void {
+    this.tiles.forEach(it1=>it1.tileType = 1);
+    this.infoLayer._clearTile(this.camera.getTileVector(this.camera.position), this.info, this.camera.getTileSize());
+    this.infoLayer.deleteObject(this.info);
+    super.destroy();
   }
 
   update(){

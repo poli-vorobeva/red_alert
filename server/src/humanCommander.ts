@@ -19,7 +19,7 @@ export class HumanCommander{
       return this.playerController.startBuilding(message.content.name);
     }
     if (message.type === 'addBuild') {
-      return this.playerController.addGameObject(message.content.name, message.content.position);
+      return this.playerController.addGameObject(message.content.name, message.content.position, this.playerController.colorIndex);
     }
     if(message.type ==='setPrimary'){
       return this.playerController.setPrimary(message.content.id, message.content.name);
@@ -31,13 +31,19 @@ export class HumanCommander{
       return this.playerController.playBuilding(message.content.name)
     }
     if (message.type === 'moveUnit') {
-      return this.playerController.moveUnits(message.content.id, message.content.position, message.content.tileSize);
+      return this.playerController.moveUnits(message.content.id, message.content.position);
     }
     if (message.type === 'attack') {
-      return this.playerController.setAttackTarget(message.content.id, message.content.targetId, message.content.tileSize);
+      return this.playerController.setAttackTarget(message.content.id, message.content.targetId);
     }
-    if (message.type === 'addInitialDate') {
-      return this.playerController.addInitialDate(message.content.name, message.content.playerId, message.content.position);
+    if (message.type === 'addInitialData') {
+      return this.playerController.addInitialData(message.content.name, message.content.playerId, message.content.position);
+    }
+    if (message.type === 'initialMap') {
+      return this.playerController.addInitialMap(message.content.map);
+    }
+    if (message.type === 'addUnit') {
+      return this.playerController.addUnit(message.content.name, message.content.spawn, message.content.playerId, message.content.colorIndex);
     }
   }
 

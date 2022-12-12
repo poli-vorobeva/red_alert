@@ -1,6 +1,8 @@
-import { Vector } from "../../../common/vector";
-import { IGameUpdateResponse } from "./dto";
-import { IGameObjectData, IObjectInfo } from "./dto";
+import { IVector, Vector } from "../../../common/vector";
+import { IGameUpdateResponse, IChatMsg, IUserItem, IInitialData} from "./dto";
+import { IGameObjectData, IObjectInfo, ISendItemGame } from "./dto";
+import {IGameOptions} from '../application/settingsPageMulti'
+import { GameModel } from "../../../server/src/gameModel";
 
 export class IClientModel
 {
@@ -11,10 +13,14 @@ export class IClientModel
   onUpdate: (data: IGameObjectData) => void;
   onAddObject: (data: IGameObjectData) => void;
   onDeleteObject: (data: IGameObjectData) => void;
-  onShot: (point: Vector) => void;
-  addUser: () => void;
+  onShot: (data: { position: IVector, id: string }) => void;
+  onChatMsg: (msg: IChatMsg) => void;
+  onUsersList: (msg: IUserItem[]) => void;
+  onGamesList: (msg: ISendItemGame[]) => void;
+  addUser: (players?: number, initialData?: IInitialData[][], credit?: number, mapGame?:number[][]) => void;
+   onMoveBullet: (data: { position: IVector, id: string })=> void;
 
-  registerGamePlayer: () => void;
+  registerGamePlayer: (gameID:number) => void;
 
   startBuild: (name: string, playerId: string) => Promise<string>;
 
@@ -25,13 +31,18 @@ export class IClientModel
   //to map
   addBuild: (name: string, position: Vector, playerId: string) => Promise<string>;
 
-  addInitialDate: (name: string, position: Vector, playerId: string) => Promise<string>;
+  addInitialData: (state: IGameOptions) => Promise<string>;
 
   setPrimary: (id: string, name: string) => Promise<string>;
-  moveUnit: (id: string, position: Vector,tileSize:number)=> Promise<string>;
+  moveUnit: (id: string, position: Vector)=> Promise<string>;
 
-  setAttackTarget:(id: string, targetId: string,tileSize:number)=>Promise<string>;
-  registerSpectator: () => void;
+  setAttackTarget:(id: string, targetId: string)=>Promise<string>;
+  registerSpectator: (gameID:number) => void;
 
-  //all game player methods
+  chatSend: (msg?: IChatMsg)=>Promise<string>;
+
+  getUsersList: (msg?: IChatMsg) => Promise<string>;
+  sendPrivateMessage: (content: { message: string, type: string }) => void;
+  addUnit: (name: string,spawn: string, id: string, colorIndex: number)=> Promise<string> ; //all game player methods
+  game: GameModel;
 }

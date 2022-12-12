@@ -4,7 +4,7 @@ import { GameObject } from '../gameObject';
 import { AbstractBuildObject } from './abstractBuildObject';
 
 export class TechCenter extends AbstractBuildObject{
-  constructor(objects:Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }) {
+  constructor(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string, colorIndex: number }) {
     super(objects, playerSides, objectId, type, state);
   } 
 }

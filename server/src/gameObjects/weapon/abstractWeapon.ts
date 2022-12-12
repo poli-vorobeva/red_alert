@@ -1,7 +1,9 @@
 import {Vector, IVector} from "../../../../common/vector";
-import {AbstractBullet} from "../bullet/abstractBullet";
+import { AbstractBullet } from "../bullet/abstractBullet";
+import { createIdGenerator } from "../../idGenerator";
+import { TickList } from "../../tickList";
 interface IBulletConstructor{
-  new(target: Vector, position: Vector): AbstractBullet;
+  new(target: Vector, position: Vector, id: string): AbstractBullet;
 }
 
 export class AbstractWeapon{
@@ -12,17 +14,22 @@ export class AbstractWeapon{
   private loading: number = 0;
   private BulletConstructor: IBulletConstructor;
   position:Vector;
-  onBulletTarget: (point: Vector) => void;
+  onBulletTarget: (point: Vector, id: string) => void;
+  moveBullet:  (point: Vector, id: string) => void;
+  nextId: () => string;
+  tickList: TickList;
 
-  constructor(BulletConstructor:IBulletConstructor, attackRadius: number, reloadTime: number){
+  constructor(BulletConstructor:IBulletConstructor, attackRadius: number, reloadTime: number, id: string){
     this.BulletConstructor = BulletConstructor;
     this.attackRadius = attackRadius; 
     this.reloadTime = reloadTime;
+    this.nextId = createIdGenerator('bullet' + id);
+    this.tickList = new TickList();
   }
 
-  step(delta:number){
-    this.loading -= delta;
-    this.bullets.forEach(it=>it.step(delta));
+  step(delta: number) {
+     this.loading -= delta;
+    // this.bullets.forEach(it=>it.step(delta));
   }
 
   render(ctx:CanvasRenderingContext2D, camera:Vector){
@@ -31,12 +38,12 @@ export class AbstractWeapon{
 
   tryShot(target:Vector){
     //if (!this.position) {console.log('no pos'); return;}
-   console.log('weapon',  target.clone().sub(this.position.clone()).abs(), this.attackRadius)
+   //console.log('weapon',  target.clone().sub(this.position.clone()).abs(), this.attackRadius)
     //if (this.loading<=0 && target.clone().sub(this.position.clone().scale(this.tileSize)).abs()<this.attackRadius){
       //console.log('radiused');
-    if (Math.random() > 0.5) {
-      this.shot(target);
-    }
+
+      this.shot(target.clone());
+    
       
      // return true;
     //}
@@ -45,13 +52,21 @@ export class AbstractWeapon{
   }
 
   private shot(target: Vector) {
-    
-    const bullet = new this.BulletConstructor(target, this.position.clone());
-    this.loading = this.reloadTime;
-    bullet.onTarget = ()=>{
-      this.bullets = this.bullets.filter(it=>it!=bullet);    
-      this.onBulletTarget?.(target.clone());
+    if (this.loading <= 0) {
+      const bullet = new this.BulletConstructor(target.clone(), this.position.clone(), this.nextId());
+      this.tickList.add(bullet);
+      this.loading = this.reloadTime;
+      bullet.onMoveBullet = (position: Vector, id: string) => {
+        this.moveBullet(position, id);
+      }
+      bullet.onTarget = (id: string)=>{
+        this.bullets = this.bullets.filter(it => it.id != id);  
+        this.tickList.remove(bullet);
+        this.onBulletTarget?.(target.clone(), id);
+      }
+      this.bullets.push(bullet);
     }
-    this.bullets.push(bullet);
+    
   }
+
 }

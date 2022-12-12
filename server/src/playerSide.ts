@@ -3,16 +3,20 @@ import { IObjectInfo } from "./dto";
 import { tech } from "./techTree";
 
 export class PlayerSide{
-  money:number = 50000;
+  money:number = 1000;
   buildings: IObjectInfo[] = [];
   buildsInGame: string[] = [];
   onUpdate:(data: string)=>void;
-  onReady: (objectType: string, objectSubType: string, spawn: string) => void;
+  onReady: (objectType: string, objectSubType: string, spawn: string, colorIndex: number) => void;
   
   id: string;
   buildsInProgress: BuildingProgress[] = [];
-  constructor(id: string){
+  colorIndex: number;
+  constructor(id: string, credits: number, colorIndex: number) {
+   
     this.id = id;
+    this.money = credits;
+    this.colorIndex = colorIndex;
     this.buildings = tech.object.map(item => {
       const newItem = {
         deps: item.deps,
@@ -38,11 +42,13 @@ export class PlayerSide{
 
   updateAvailableObject() {
     const availableObject = Array.from(new Set(this.buildsInGame));
-       
+    this.buildings.filter(item => item.status === 'available' && !item.object.deps.every(el => availableObject.includes(el)))
+      .map(it => it.status = 'notAvailable');
     this.buildings.filter(item => item.object.deps.includes('rootAccess'))
       .concat(this.buildings.filter(item => item.object.deps.every(el=>availableObject.includes(el))))
       .filter(item => item.status === 'notAvailable')
       .map(item => item.status = 'available'); 
+
   }
 
   getState() {    
@@ -51,7 +57,7 @@ export class PlayerSide{
 
   removeBuilding(name: string) {
     const index = this.buildsInGame.findIndex(item=>item===name);
-    this.buildsInGame.splice(index, 1);
+    this.buildsInGame.splice(index, 1);   
     this.updateAvailableObject();
     this.onUpdate(JSON.stringify({ sidePanelData: this.buildings, money: this.money }));
   }
@@ -105,7 +111,7 @@ export class PlayerSide{
             if (item.isReady) {
               this.buildings.find(it => it.object === item.object.object).status = 'isReady';
               this.buildsInProgress = this.buildsInProgress.filter(it => item != it);
-              this.onReady(item.object.object.name, item.object.object.subType, item.object.object.spawn)
+              this.onReady(item.object.object.name, item.object.object.subType, item.object.object.spawn, this.colorIndex)
             }
           }
          

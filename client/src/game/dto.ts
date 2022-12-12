@@ -1,19 +1,38 @@
-import { Vector } from "../../../common/vector";
+import { IVector, Vector } from "../../../common/vector";
 
 //action: add/delete/atack/move
 
 export interface IGameObjectContent{
-  position: Vector;
-  health: number;
+  position: IVector;
+  health?: number;
   playerId: string;
   primary?: boolean;
   action?: string;
   target?: Vector; 
+  buildMatrix?: number[][];
+  colorIndex?: number;
 }
 export interface IGameObjectData{  
   type: string;//name
   objectId: string; 
   content: IGameObjectContent;
+}
+export interface IInitialData {
+  name: string;
+  position: {
+    x: number;
+    y: number;
+  }
+}
+
+export interface ISettings{
+  map: HTMLImageElement;
+  credits: number;
+  initialData: IInitialData[][];
+  players: number;
+}
+export interface IGameOptions extends ISettings{
+  mapGame: number[][]
 }
 
 export interface IObject {
@@ -22,6 +41,8 @@ export interface IObject {
   cost: number,
   subType: string,
   time: number,
+  mtx?: number[][],
+  spawn: string
  }
 export interface IObjectInfo {
   object: IObject,
@@ -34,6 +55,7 @@ export interface IServerRequestMessage {
 }
 
 export interface IServerResponseMessage {
+  sessionID: string;
   type: string;
   content: string;
   requestId: string;
@@ -50,7 +72,8 @@ export interface IObjectContent{
 export interface IStartGameResponse {
   sidePanel: IUpdateSidePanel;
   players: string[];
-  type?: 'bot'|'human'|'spectator'
+  type?: 'bot' | 'human' | 'spectator',
+  colorIndex: number,
 }
 
 export interface IUpdateSidePanel{
@@ -60,10 +83,30 @@ export interface IUpdateSidePanel{
 }
 
 export interface IRegisterGamePlayerRequest{
+ gameID:number;
  type: 'bot'|'human'|'spectator'
 }
 
 export interface IGameUpdateResponse{
   type: 'update' | 'delete' | 'create';
   data: IGameObjectData;
+}
+
+export interface IChatMsg{
+  user: string;
+  msg: string;
+}
+export interface IUserItem{
+  name: string;
+  id: string;
+  type: string;
+}
+
+export interface ISendItemGame {
+  id: number;
+  credits: number;
+  mapID: number;
+  speed: number;
+  info: string;
+  users: IUserItem[];
 }

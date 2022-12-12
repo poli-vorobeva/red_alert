@@ -1,20 +1,28 @@
 import { Vector } from "../../common/vector";
+import { Session } from "./serverSocket";
 
 export interface IServerResponseMessage {
+  sessionID: string;
   type: string;
   content: string;
   requestId: string;
 }
 export interface IServerRequestMessage {
+  sessionID: string;
   type: string;
   content: string;
   requestId: string;
 }
-
+export interface IConnection {
+  sendUTF: (data: string) => void;
+  onMessage?:(message:string)=>void;
+}
 export interface IRegisteredPlayerInfo{
   id:string,
   type: 'bot'|'human'|'spectator'
-  connection?: any;//connection
+  // connection?: any;//connection
+  connection?: Session,
+  colorIndex: number,
 }
 
 export interface IObject {
@@ -36,11 +44,13 @@ export interface ITickable{
 }
 export interface IGameObjectContent{
   position: Vector;
-  health: number;
+  health?: number;
   playerId: string;
   primary?: boolean;
   action?: string;
   target?: Vector; 
+  buildMatrix?: number[][];
+  colorIndex?:number
 }
 export interface IGameObjectData{  
   type: string;//name
@@ -57,9 +67,12 @@ export interface IStartGameResponse {
   sidePanel: ISidePanelData;
   players: string[];
   type?: 'bot' | 'human' | 'spectator',
+  colorIndex: number;
 }
 
 export interface IUpdateSidePanel{
   sidePanelData: IObjectInfo[];
   money: number;
 }
+import { ISendItem } from "./gamesListItem"
+export  { ISendItem };

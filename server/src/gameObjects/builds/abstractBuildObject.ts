@@ -8,7 +8,9 @@ export class AbstractBuildObject extends GameObject{
     position: null,
     health: null,
     playerId: null,
-    primary: false,
+     primary: false,
+     buildMatrix: null,
+     colorIndex: null
   };
   onUpdate: ( state: IGameObjectData) => void;
   onCreate: (state: IGameObjectData) => void;
@@ -17,16 +19,26 @@ export class AbstractBuildObject extends GameObject{
 
   objects: Record<string, GameObject> = {};
 
-  subType: string;
+  subType: string = 'build';
   type: string;
+  playerSides: PlayerSide[];
 
-  constructor(objects:Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }) {
+  constructor(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string, colorIndex: number }) {
     super();
     this.data.position = Vector.fromIVector(state.position);
     this.data.playerId = state.playerId;
     this.data.health = 100;
+    this.data.colorIndex = state.colorIndex;
     this.type = type;
+    this.objects = objects;
     this.objectId = objectId;
+    this.data.buildMatrix = [
+      [0,1,1,0],
+      [1,1,1,1],
+      [1,1,1,1],
+      [1,1,1,1],
+    ];
+    this.playerSides = playerSides;
   }
   
   create() {
@@ -50,5 +62,27 @@ export class AbstractBuildObject extends GameObject{
       objectId: this.objectId,
       content: this.getState(),
     });    
+  }
+  damage(point: Vector, unit: GameObject, damagePower: number) {
+    
+    if (this.data.health <= 0) {
+      this.destroy();
+    } else if(this.data.health>0){
+      //console.log(this.data.health)
+      this.setState((data) => {
+        return {
+          ...data,
+          health: this.data.health - damagePower,
+        }
+      })
+    } 
+  }
+
+  destroy() {
+    this.onDelete({
+       type: this.type,
+      objectId: this.objectId,
+      content: this.getState(),
+    });  
   }
 }

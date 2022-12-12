@@ -5,27 +5,33 @@ export class AbstractBullet {
   target: Vector;
   position: Vector;
   speed: number = 1;
-  onTarget: () => void;
+  onTarget: (id: string) => void;
   isDestroyed: boolean = false;
+  onMoveBullet: (position: Vector, id: string)=>void;
+  id: string;
 
-  constructor(target: Vector, position: Vector) {
+  constructor(target: Vector, position: Vector, id: string) {
     this.target = target;
     this.position = position;
+    this.id = id;
   }
 
-  step(delta: number) {
+  tick(delta: number) {
     if (this.isDestroyed) return;
     
-    const next = this.position.clone().add(this.position.clone().sub(this.target).normalize().scale(-this.speed * delta*0.005));
+    const next = this.position.clone().add(this.position.clone().sub(this.target).normalize().scale(-this.speed * delta*0.003));
+     //console.log('BULLET', next)
     // console.log('bullet', onLine(this.target, this.position, next))
     // console.log(this.position, this.target, next)
+    this.onMoveBullet(next, this.id);
     if (onLine(this.target, this.position, next)) {
-      this.onTarget?.();
+      this.onTarget?.(this.id);
       this.isDestroyed = true;
     } else {
       this.position = next;
     }
   }
+
   // render(ctx:CanvasRenderingContext2D, camera:Vector){
   //   if (this.isDestroyed) return;
 

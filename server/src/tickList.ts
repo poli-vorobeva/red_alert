@@ -13,11 +13,15 @@ export class TickList {
       this.tickable.forEach(item => {
         item.tick(delta);
       })
-    }, 200)
+    }, 100)
   }
 
   add(item:ITickable) {
     this.tickable.push(item);
+  }
+
+  remove(item: ITickable) {
+    this.tickable = this.tickable.filter(it => it != item);
   }
 
 }

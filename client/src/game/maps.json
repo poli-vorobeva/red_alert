@@ -1,0 +1,304 @@
+[
+  {
+    "size": "96x96",
+    "players": 4,
+    "name": "Mysterious paths",
+    "src": "./public/maps/map1-full.png",
+    "srcData": "./public/maps/map1.png",
+      "initialData": [
+        [
+          {
+            "name": "buildingCenter",
+            "position": {
+              "x": 25,
+              "y": 21
+            }
+          },
+          {
+            "name": "barrack",
+            "position": {
+              "x": 25,
+              "y": 26
+            }
+          },
+          {
+            "name": "oreFactory",
+            "position": {
+              "x": 30,
+              "y": 20
+            }
+          }
+        ],
+        [
+          {
+            "name": "buildingCenter",
+            "position": {
+              "x": 8,
+              "y": 4
+            }
+          },
+          {
+            "name": "barrack",
+            "position": {
+              "x": 13,
+              "y": 6
+            }
+          },
+          {
+            "name": "oreFactory",
+            "position": {
+              "x": 8,
+              "y": 10
+            }
+          }
+        ],
+        [
+          {
+            "name": "buildingCenter",
+            "position": {
+              "x": 78,
+              "y": 20
+            }
+          },
+          {
+            "name": "barrack",
+            "position": {
+              "x": 83,
+              "y": 23
+            }
+          },
+          {
+            "name": "oreFactory",
+            "position": {
+              "x": 83,
+              "y": 18
+            }
+          }
+        ],
+        [
+          {
+            "name": "buildingCenter",
+            "position": {
+              "x": 14,
+              "y": 80
+            }
+          },
+          {
+            "name": "barrack",
+            "position": {
+              "x": 20,
+              "y": 82
+            }
+          },
+          {
+            "name": "oreFactory",
+            "position": {
+              "x": 15,
+              "y": 85
+            }
+          }
+        ]
+      ]
+  }, 
+  {
+    "size": "96x96",
+    "players": 4,
+    "name": "Forest",
+    "src": "./public/maps/map2-full.png",
+    "srcData": "./public/maps/map2.png",
+        "initialData": [
+          [
+            {
+              "name": "buildingCenter",
+              "position": {
+                "x": 78,
+                "y": 84
+              }
+            },
+            {
+              "name": "barrack",
+              "position": {
+                "x": 83,
+                "y": 86
+              }
+            },
+            {
+              "name": "oreFactory",
+              "position": {
+                "x": 78,
+                "y": 90
+              }
+            }
+          ],
+          [
+            {
+              "name": "buildingCenter",
+              "position": {
+                "x": 8,
+                "y": 4
+              }
+            },
+            {
+              "name": "barrack",
+              "position": {
+                "x": 13,
+                "y": 6
+              }
+            },
+            {
+              "name": "oreFactory",
+              "position": {
+                "x": 8,
+                "y": 10
+              }
+            }
+          ],
+          [
+            {
+              "name": "buildingCenter",
+              "position": {
+                "x": 78,
+                "y": 4
+              }
+            },
+            {
+              "name": "barrack",
+              "position": {
+                "x": 83,
+                "y": 6
+              }
+            },
+            {
+              "name": "oreFactory",
+              "position": {
+                "x": 78,
+                "y": 10
+              }
+            }
+          ],
+          [
+            {
+              "name": "buildingCenter",
+              "position": {
+                "x": 8,
+                "y": 84
+              }
+            },
+            {
+              "name": "barrack",
+              "position": {
+                "x": 13,
+                "y": 86
+              }
+            },
+            {
+              "name": "oreFactory",
+              "position": {
+                "x": 8,
+                "y": 90
+              }
+            }
+          ]
+        ]
+  },
+  {
+    "size": "96x96",
+    "players": 4,
+    "name": "Green fields",
+    "src": "./public/maps/map3-full.png",
+    "srcData": "./public/maps/map3.png",
+    "initialData":[
+      [
+        {
+          "name": "buildingCenter",
+          "position": {
+            "x": 78,
+            "y": 84
+          }
+        },
+        {
+          "name": "barrack",
+          "position": {
+            "x": 83,
+            "y": 86
+          }
+        },
+        {
+          "name": "oreFactory",
+          "position": {
+            "x": 78,
+            "y": 90
+          }
+        }
+      ],
+      [
+        {
+          "name": "buildingCenter",
+          "position": {
+            "x": 8,
+            "y": 4
+          }
+        },
+        {
+          "name": "barrack",
+          "position": {
+            "x": 13,
+            "y": 6
+          }
+        },
+        {
+          "name": "oreFactory",
+          "position": {
+            "x": 8,
+            "y": 10
+          }
+        }
+      ],
+      [
+        {
+          "name": "buildingCenter",
+          "position": {
+            "x": 78,
+            "y": 4
+          }
+        },
+        {
+          "name": "barrack",
+          "position": {
+            "x": 83,
+            "y": 6
+          }
+        },
+        {
+          "name": "oreFactory",
+          "position": {
+            "x": 78,
+            "y": 10
+          }
+        }
+      ],
+      [
+        {
+          "name": "buildingCenter",
+          "position": {
+            "x": 8,
+            "y": 84
+          }
+        },
+        {
+          "name": "barrack",
+          "position": {
+            "x": 13,
+            "y": 86
+          }
+        },
+        {
+          "name": "oreFactory",
+          "position": {
+            "x": 8,
+            "y": 90
+          }
+        }
+      ]
+    ]}
+]

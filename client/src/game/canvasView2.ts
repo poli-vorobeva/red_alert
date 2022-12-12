@@ -1,7 +1,7 @@
 import Control from "../../../common/control";
 import { Camera } from "./ultratiling/camera";
 import { IGameObjectData, IObject } from "./dto";
-import { Vector } from '../../../common/vector';
+import { IVector, Vector } from '../../../common/vector';
 import { RenderTicker } from './ultratiling/renderTicker';
 import { GameMainRender } from './ultratiling/gameMainRenderer';
 import red from './red.css'
@@ -9,10 +9,10 @@ import red from './red.css'
 
 export class Canvas extends Control{
   onGameMove: () => void;
-  onClick: (position: Vector) => void;
+  onClick: (position: Vector, name: string) => void;
   onObjectClick: (id: string, name: string, subType: string) => void;
-  onChangePosition: (id: string, position: Vector, tileSize: number) => void;
-  onAttack: (id: string, targetId: string, tileSize: number) => void;
+  onChangePosition: (id: string, position: Vector) => void;
+  onAttack: (id: string, targetId: string) => void;
   canvas: Control<HTMLCanvasElement>;
   ctx: CanvasRenderingContext2D;
   ticker = new RenderTicker();
@@ -21,7 +21,7 @@ export class Canvas extends Control{
   res: Record<string, HTMLImageElement>;
   private _resizeHandler: ()=>void;
 
-  constructor(parentNode: HTMLElement, res:Record<string, HTMLImageElement>, id: string) {
+  constructor(parentNode: HTMLElement, res:Record<string, HTMLImageElement>, id: string, colorIndex: number) {
     super(parentNode, 'div', red['game_field']);
     this.playerId = id;
     this.res = res;
@@ -47,6 +47,7 @@ export class Canvas extends Control{
     }
 
     this.canvas.node.onclick = (e: MouseEvent) => {
+      this.renderer.handleClick(new Vector(e.offsetX, e.offsetY));
       // this.renderer.camera.scale = this.renderer.camera.scale - 0.2;
       // this.renderer.tilingLayer.updateCamera(this.renderer.camera.position, this.renderer.camera.getTileSize());
       // this.renderer.boundingLayer.updateCamera(this.renderer.camera.position, this.renderer.camera.getTileSize());
@@ -60,31 +61,32 @@ export class Canvas extends Control{
 
     this.canvas.node.oncontextmenu = (e) => {
       e.preventDefault();
+      this.renderer.handleContextMenu()
     }
     this.canvas.node.onmousedown = (e: MouseEvent) => {
       this.renderer.handleMouseDown(new Vector(e.offsetX, e.offsetY));
     } 
 
-    this.renderer = new GameMainRender(camera, this.canvas.node.width, this.canvas.node.height, res, this.playerId);
+    this.renderer = new GameMainRender(camera, this.canvas.node.width, this.canvas.node.height, res, this.playerId, colorIndex);
     this.ticker.onTick.add((delta)=>{
       this.render(this.ctx, delta);
     });
     this.ticker.startRender();
     this.renderer.setCameraPosition(new Vector(-200, -200));
 
-    this.renderer.onAddBuild = (position)=>{
-      this.onClick(position);
+    this.renderer.onAddBuild = (position, name)=>{
+      this.onClick(position, name);
     }
 
     this.renderer.onObjectClick = (id, name, subType) => {
       this.onObjectClick(id, name, subType);
     }
-    this.renderer.onChangePosition = (id, position,tileSize:number)=>{
-      this.onChangePosition(id, position,tileSize)
+    this.renderer.onChangePosition = (id, position)=>{
+      this.onChangePosition(id, position)
     }
 
-    this.renderer.onAttack = (id, idTarget, tileSize) => {
-      this.onAttack(id, idTarget, tileSize);
+    this.renderer.onAttack = (id, idTarget) => {
+      this.onAttack(id, idTarget);
     }
 
     this._resizeHandler = ()=>{
@@ -116,8 +118,14 @@ export class Canvas extends Control{
     //const interactiveObject = new BuildConstructor(data);
   }
 
-  addShot(point: Vector) {
-    this.renderer.addShot(point);
+  addShot(data: { position: IVector, id: string }) {
+    this.renderer.addShot(data);
+  }
+  addBullet(data: { position: IVector, id: string }) {
+    this.renderer.addBullet(data);
+  }
+  errorBuiding() {
+    this.renderer.errorBuilding();
   }
 
   render(ctx: CanvasRenderingContext2D, delta: number) {

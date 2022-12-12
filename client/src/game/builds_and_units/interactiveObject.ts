@@ -76,9 +76,16 @@ export class InteractiveObject{
   update(){
     //this.tiles.forEach(it=>it.update());
   }
-
-  destroy(){
-    this.infoLayer._clearTile(this.camera.getTileVector(this.camera.position), this.info, this.camera.getTileSize());
+  setSelected() {
+    
+  }
+  deleteSelected() {
+  
+  }
+  
+  destroy() {
+    interactiveList.remove(this.id);
+    
   }
 //   isHovered: boolean;
 //   onMouseMove: any;

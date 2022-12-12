@@ -4,7 +4,10 @@ import { GameObject } from '../gameObject';
 import { AbstractUnitObject } from './abstractUnitObject';
 
 export class HeavyTank extends AbstractUnitObject{
-constructor(objects:Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string }) {
+attackRadius: number = 5;
+  findRadius: number = 10;
+  damegePower = 30;
+  constructor(objects: Record<string, GameObject>, playerSides: PlayerSide[], objectId: string, type: string, state: { position: IVector, playerId: string, colorIndex: number }) {
     super(objects, playerSides, objectId, type, state);
   }
 }

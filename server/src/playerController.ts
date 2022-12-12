@@ -4,10 +4,12 @@ import { GameModel } from "./gameModel";
 export class PlayerController{
   gameModel: GameModel;
   playerId: string;
+  colorIndex: number;
   
-  constructor(playerId:string, gameModel:GameModel){
+  constructor(playerId:string, gameModel:GameModel, colorIndex:number){
     this.gameModel = gameModel;
     this.playerId = playerId;
+    this.colorIndex = colorIndex;
   }
 
   //  на сайд панели постройку запускает
@@ -24,13 +26,20 @@ export class PlayerController{
   }
 
   // Добавление объекта на канвас
-  addGameObject(objectType: string, position: IVector) {
-    console.log("%c"+this.playerId+ ' строит '+ objectType+ ': '+position.x+': '+position.y, 'color: blue')
-    return this.gameModel.addGameObject(this.playerId, objectType, position);
+  addGameObject(objectType: string, position: IVector, colorIndex:number) {
+    const result = this.gameModel.addGameObject(this.playerId, objectType, position, colorIndex);
+    // if(result !== 'false'){
+    //   console.log("%c"+this.playerId+ ' строит '+ objectType+ ': '+position.x+': '+position.y, 'color: blue')
+    // }
+    return result;
   }
 
-  moveUnits(unitId:string, target:IVector,tileSize:number){
-    return this.gameModel.moveUnits(this.playerId, unitId, target,tileSize);
+  addUnit(name: string, spawn: string, id: string, colorIndex:number) {
+    return this.gameModel.addUnit(name,spawn, id, colorIndex);
+  }
+
+  moveUnits(unitId:string, target:IVector){
+    return this.gameModel.moveUnits(this.playerId, unitId, target);
   }
 
   updateSidePanel(targetId: string) {
@@ -46,18 +55,21 @@ export class PlayerController{
     return this.gameModel.getObjects();
   }
 
-  setAttackTarget(unitId:string, targetId:string, tileSize: number){
-    return this.gameModel.setAttackTarget(this.playerId, unitId, targetId, tileSize)
+  setAttackTarget(unitId:string, targetId:string){
+    return this.gameModel.setAttackTarget(this.playerId, unitId, targetId)
   }
 
-  setPrimary(buildId: string, name: string) {    
+  setPrimary(buildId: string, name: string) {   
     return this.gameModel.setPrimary(this.playerId, buildId, name);
   }
-  addInitialDate(name: string, playerId: string, position: IVector) {
-    console.log(playerId)
+  
+  addInitialData(name: string, playerId: string, position: IVector) {
     if (playerId === this.playerId) {
-      return this.gameModel.addGameObject(this.playerId,name, position)
+      return this.gameModel.addGameObject(this.playerId,name, position,this.colorIndex)
     }
   }
-
+  addInitialMap(map:number[][]){
+    return this.gameModel.createMap(map);
+  }
+  
 }
